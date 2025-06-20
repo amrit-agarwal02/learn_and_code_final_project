@@ -23,6 +23,8 @@ class NewsRepository:
         conn.commit()
         cursor.close()
         conn.close()
+        return cursor.lastrowid
+
 
 
     def get_recent_news(self, count_of_recent_news: int):
@@ -44,3 +46,11 @@ class NewsRepository:
         latest_news_article = [NewsArticle(**row) for row in rows]
 
         return latest_news_article
+
+    def get_last_article_id(self):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor()
+        last_article_id = cursor.lastrowid
+
+        return last_article_id
+

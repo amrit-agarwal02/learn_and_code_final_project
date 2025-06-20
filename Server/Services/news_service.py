@@ -2,19 +2,36 @@ import requests
 from Server.Repositories.news_repo import NewsRepository
 from Server.Repositories.category_repo import CategoryRepository
 from Server.schemas.news import NewsArticleCreate
-from Server.Repositories.external_api_repo import ExternalAPIRepository
+from Server.Repositories.external_server_repo import ExternalServerRepository
 from Server.config.constants import API_URL
+from Server.Services.category_classifier import CategoryClassifier
+from Server.Services.category_service import CategoryService
 from loguru import logger
 
 class NewsService:
     def __init__(self):
         self.news_repo = NewsRepository()
-        self.external_api_repo = ExternalAPIRepository()
+        self.external_api_repo = ExternalServerRepository()
         self.category_repo = CategoryRepository()
+        self.classifier = CategoryClassifier()
 
     def get_active_api(self):
         apis = self.external_api_repo.get_api_status()
         return next((api for api in apis if api["is_active"]==1), None)
+
+    def classify_article(self,article:NewsArticleCreate,article_id):
+        title = article.title
+        description = article.description
+        content = article.content
+
+        category_name = self.classifier.classify(title, description, content)
+
+        category = self.category_repo.get_by_name(category_name)
+        category_id = category["category_id"] if category else None
+
+        if article_id and category_id:
+            self.category_repo.insert_article_category(category_id,article_id)
+            logger.info(f"Mapped Article {article_id} to Category '{category_name}'")
 
     def fetch_news(self, url):
         try:
@@ -42,12 +59,21 @@ class NewsService:
             parsed_articles.append(news)
         return parsed_articles
 
-    def parse_articles_thenewsapi(self, data, server_id):
+    def store_articles_thenewsapi(self, data, server_id):
         articles = data.get("data", [])
-        print(articles)
         parsed_articles = []
         for article in articles:
             source = article.get("source")
+            title = article.get("title")
+            server_id = server_id
+            description = article.get("description")
+            content = article.get("content")
+            source = source
+            url = article.get("url")
+            published_at = article.get("published_at")
+            categories = article.get("categories",[])
+
+
             news = NewsArticleCreate(
                 title=article.get("title"),
                 server_id=server_id,
@@ -58,24 +84,24 @@ class NewsService:
                 published_at=article.get("published_at")
             )
             parsed_articles.append(news)
+            article_id = self.news_repo.save(news)
+            for category_name in categories:
+                if category_name:
+                    category = self.category_repo.get_by_name(category_name)
+                    if category:
+                        category_id = category.get('category_id')
+                        self.category_repo.insert_article_category(category_id, article_id)
+                    else:
+                        category_name= CategoryClassifier.DEFAULT_CATEGORY
+                        category_id = self.category_repo.get_id_by_name(category_name).get('category_id')
+                        self.category_repo.insert_article_category(category_id, article_id)
+
         return parsed_articles
-
-    def store_categories(self,last_articles_stored):
-
-        recent_stored_articles = self.news_repo.get_recent_news(last_articles_stored)
-
-        for article in recent_stored_articles:
-            self.category_repo.get_by_name(article)
-
-
-        pass
 
     def store_articles(self, articles, active_api):
         for article in articles:
-            self.news_repo.save(article)
-
-        articles_inserted = len(articles)
-        self.store_categories(articles_inserted)
+            article_id = self.news_repo.save(article)
+            self.classify_article(article, article_id)
 
         return{
             "message": f"{len(articles)} articles stored from {active_api['server_name']}",
@@ -92,7 +118,7 @@ class NewsService:
         active_api_url = API_URL.get(active_api["server_name"])
         active_api_server_id = active_api["server_id"]
 
-        logger.info(f"Fetching news from {active_api_url}...")
+        logger.info(f"Fetching news from {active_api_url}")
 
         data = self.fetch_news(active_api_url+active_api["api_key"])
 
@@ -100,17 +126,16 @@ class NewsService:
             return {"error": f"Failed to fetch news from {active_api['name']}"}
 
         if "thenewsapi" in active_api_url.lower():
-            articles = self.parse_articles_thenewsapi(data,active_api_server_id)
+            articles = self.store_articles_thenewsapi(data, active_api_server_id)
+            logger.info(f"Fetched and stored {len(articles)} articles from {active_api['server_name']}")
+            logger.success("News sync completed.")
+            return {
+                "message": f"{len(articles)} articles stored from {active_api['server_name']}",
+                "source": active_api["server_name"]
+            }
         else:
-            articles = self.parse_articles_newsapi(data,active_api_server_id)
-
-        logger.info(f"Fetched {len(articles)} articles.")
-        print(articles,active_api)
-        result = self.store_articles(articles, active_api)
-        logger.success("News sync completed.")
-        return result
+            articles = self.parse_articles_newsapi(data, active_api_server_id)
+            result = self.store_articles(articles, active_api)
+            return result
 
 
-
-obj = NewsService()
-obj.sync_news_from_api()

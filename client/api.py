@@ -31,3 +31,11 @@ class APIClient:
             self.user_role = payload.get("role")
             self.email = payload.get("sub")
         return resp
+
+    def get_articles(self):
+        resp = requests.get(f"{API_BASE_URL}/articles/", headers=self._headers())
+        return resp
+
+    def get_articles_by_category(self, category_id):
+        resp = requests.get(f"{API_BASE_URL}/articles/?category_id={category_id}", headers=self._headers())
+        return resp

@@ -21,20 +21,29 @@ class CategoryRepository:
         conn.close()
         return category
 
+    def get_id_by_name(self, name: str) -> Optional[dict]:
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT category_id FROM category WHERE category_name = %s", (name,))
+        category_id = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return category_id
+
     def get_by_name(self, name: str) -> Optional[dict]:
         conn = DbConnection.get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM category WHERE name = %s", (name,))
-        category = cursor.fetchone()
+        cursor.execute("SELECT * FROM category WHERE category_name = %s", (name,))
+        category_id = cursor.fetchone()
         cursor.close()
         conn.close()
-        return category
+        return category_id
 
     def create(self, name: str, description: str = None) -> dict:
         conn = DbConnection.get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO category (name) VALUES (%s)",
+            "INSERT INTO category (category_name) VALUES (%s)",
             (name,)
         )
         conn.commit()
@@ -74,3 +83,15 @@ class CategoryRepository:
         cursor.close()
         conn.close()
         return True
+
+    def insert_article_category(self, category_id, article_id):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("insert into article_category_mapping(category_id, article_id) values(%s,%s)",(category_id, article_id))
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+obj = CategoryRepository()
+
+print(obj.get_all())
