@@ -1,6 +1,7 @@
 from Server.Repositories.category_repo import CategoryRepository
 from typing import List
 from Server.schemas.news import NewsArticleCreate
+from Server.schemas.category import CategoryCreate
 from loguru import logger
 
 class CategoryService:
@@ -16,11 +17,13 @@ class CategoryService:
             raise ValueError(f"Category with ID {category_id} not found")
         return category
 
-    def create_category(self, name: str, description: str = None) -> dict:
-        existing = self.repo.get_by_name(name)
+    def create_category(self, category: CategoryCreate) -> dict:
+        existing = self.repo.get_by_name(category.category_name)
         if existing:
-            raise ValueError(f"Category '{name}' already exists")
-        return self.repo.create(name, description)
+            raise ValueError(f"Category '{category.category_name}' already exists")
+        payload = self.repo.create(category.category_name)
+        self.repo.insert_category_keywords(category.category_name, category.keywords)
+        return payload
 
     def update_category(self, category_id: int, name: str = None, description: str = None) -> dict:
         existing = self.repo.get_by_id(category_id)

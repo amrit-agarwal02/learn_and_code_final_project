@@ -17,14 +17,12 @@ class CategoryController:
     def get_category_by_id(self, category_id: int) -> dict:
         try:
             return self.service.get_category_by_id(category_id)
-        except CategoryNotFoundException as e:
-            raise HTTPException(status_code=HTTP_NOT_FOUND, detail=str(e))
         except Exception as e:
             raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
 
     def create_category(self, category: CategoryCreate) -> dict:
         try:
-            return self.service.create_category(category.name, category.description)
+            return self.service.create_category(category)
         except ValueError as e:
             raise HTTPException(status_code=400, detail=str(e))
         except Exception as e:
@@ -33,8 +31,6 @@ class CategoryController:
     def update_category(self, category_id: int, category: CategoryUpdate) -> dict:
         try:
             return self.service.update_category(category_id, category.name, category.description)
-        except CategoryNotFoundException as e:
-            raise HTTPException(status_code=HTTP_NOT_FOUND, detail=str(e))
         except ValueError as e:
             raise HTTPException(status_code=400, detail=str(e))
         except Exception as e:
@@ -44,7 +40,5 @@ class CategoryController:
         try:
             self.service.delete_category(category_id)
             return {"message": f"Category {category_id} deleted successfully"}
-        except CategoryNotFoundException as e:
-            raise HTTPException(status_code=HTTP_NOT_FOUND, detail=str(e))
         except Exception as e:
             raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))

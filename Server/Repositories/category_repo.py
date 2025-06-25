@@ -1,6 +1,6 @@
+import json
 from Server.config.database import DbConnection
 from typing import List, Optional
-
 
 class CategoryRepository:
     def get_all(self) -> List[dict]:
@@ -39,7 +39,7 @@ class CategoryRepository:
         conn.close()
         return category_id
 
-    def create(self, name: str, description: str = None) -> dict:
+    def create(self, name: str):
         conn = DbConnection.get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
@@ -49,6 +49,17 @@ class CategoryRepository:
         conn.commit()
         cursor.close()
         conn.close()
+
+        return {"Category Successfully Created"}
+
+    def insert_category_keywords(self,category_name: str, category_keywords: List[str]):
+        self.categories = self.load_keywords()
+        if category_name in self.categories:
+            raise ValueError("Category Already Present")
+        else:
+            self.categories[category_name] = category_keywords
+            self.save_keywords()
+
 
     def update(self, category_id: int, name: str = None, description: str = None) -> Optional[dict]:
         conn = DbConnection.get_db_connection()
@@ -84,6 +95,14 @@ class CategoryRepository:
         conn.close()
         return True
 
+    def save_keywords(self):
+        with open(r"D:\learn and code final project github repo\learn_and_code_final_project\Server\config\category_keywords.json", "w") as file:
+            json.dump(self.categories, file, indent=2)
+
+    def load_keywords(self):
+        with open(r"D:\learn and code final project github repo\learn_and_code_final_project\Server\config\category_keywords.json", "r") as file:
+            return json.load(file)
+
     def insert_article_category(self, category_id, article_id):
         conn = DbConnection.get_db_connection()
         cursor = conn.cursor()
@@ -91,4 +110,3 @@ class CategoryRepository:
         conn.commit()
         cursor.close()
         conn.close()
-
