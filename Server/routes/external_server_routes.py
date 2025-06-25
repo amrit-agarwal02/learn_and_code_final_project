@@ -8,3 +8,8 @@ router = APIRouter(prefix="/external-servers", tags=["external_servers"])
 def get_all_external_servers(user=Depends(admin_required)):
     controller = ExternalServerController()
     return controller.get_all_external_servers()
+
+@router.get("/server-details")
+def get_server_details(user=Depends(admin_required)):
+    controller = ExternalServerController()
+    return controller.get_external_server_details()

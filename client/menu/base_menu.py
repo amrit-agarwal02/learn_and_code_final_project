@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from client.api import APIClient
+from client.api.api_client import APIClient
 
 class BaseMenu(ABC):
     def __init__(self, api: APIClient):
@@ -8,6 +8,3 @@ class BaseMenu(ABC):
     @abstractmethod
     def show(self):
         pass
-
-    def pause(self):
-        input("Press Enter to continue...")

@@ -1,56 +1,76 @@
-# client/menus/user_menu.py
 from client.menu.base_menu import BaseMenu
 from client.menu.notification_menu import NotificationMenu
+from client.menu.headlines_menu import HeadlinesMenu
 
 class UserMenu(BaseMenu):
     def show(self):
         while True:
             print("\nUser Menu:")
-            print("1. View Headlines")
-            print("2. View Categories")
-            print("3. Save Article")
-            print("4. View Saved Articles")
-            print("5. Delete Saved Article")
-            print("6. Search Articles")
-            print("7. Notifications")
-            print("8. Logout")
+            print("1. Headlines")
+            print("2. Saved Articles")
+            print("3. Search")
+            print("4. Notifications")
+            print("5. Logout")
             choice = input("Enter your choice: ")
 
             if choice == "1":
-                self._display_list(self.api.get_articles(), 'article_id', 'title')
+                HeadlinesMenu(self.api).show()
             elif choice == "2":
-                self._display_list(self.api.get_categories(), 'category_id', 'category_name')
+                self._view_saved_art()
             elif choice == "3":
-                article_id = input("Enter Article ID to save: ")
-                self._simple_action(self.api.save_article(article_id), "Article saved.")
+                self._search_art()
             elif choice == "4":
-                self._display_list(self.api.get_saved_articles(), 'saved_id', 'article_id')
-            elif choice == "5":
-                saved_id = input("Enter Saved Article ID to delete: ")
-                self._simple_action(self.api.delete_saved_article(saved_id), "Saved article deleted.")
-            elif choice == "6":
-                query = input("Enter search query: ")
-                start = input("Start date (YYYY-MM-DD, optional): ")
-                end = input("End date (YYYY-MM-DD, optional): ")
-                self._display_list(self.api.search_articles(query, start or None, end or None), 'article_id', 'title')
-            elif choice == "7":
                 NotificationMenu(self.api).show()
-            elif choice == "8":
+            elif choice == "5":
                 print("Logging out...")
                 break
             else:
                 print("Invalid choice.")
-            self.pause()
 
-    def _display_list(self, resp, key_field, value_field):
-        if resp.ok:
-            for item in resp.json():
-                print(f"{item[key_field]}: {item[value_field]}")
+    def _view_articles(self):
+        response = self.api.get_articles()
+        if response.ok:
+            for article in response.json():
+                print(f"{article['article_id']}: {article['title']}")
         else:
-            print("Failed to fetch data.")
+            print("Failed to fetch art.")
 
-    def _simple_action(self, resp, success_message):
-        if resp.ok:
-            print(success_message)
+
+    def _view_categories(self):
+        response = self.api.get_categories()
+        if response.ok:
+            for cat in response.json():
+                print(f"{cat['category_id']}: {cat['category_name']}")
         else:
-            print("Operation failed.")
+            print("Failed to fetch categories.")
+
+
+    def _save_article(self):
+        article_id = input("Enter Article ID to save: ")
+        response = self.api.save_article(article_id)
+        print("Article saved." if response.ok else "Failed to save article.")
+
+    def _view_saved_art(self):
+        response = self.api.get_saved_art()
+        if response.ok:
+            for art in response.json():
+                print(f"{art['saved_id']}: {art['article_id']}")
+        else:
+            print("Failed to fetch saved art.")
+
+    def _delete_saved_article(self):
+        saved_id = input("Enter Saved Article ID to delete: ")
+        response = self.api.delete_saved_article(saved_id)
+        print("Saved article deleted." if response.ok else "Failed to delete saved article.")
+
+
+    def _search_art(self):
+        query = input("Enter search query: ")
+        start_date = input("Start date (YYYY-MM-DD, optional): ")
+        end_date = input("End date (YYYY-MM-DD, optional): ")
+        response = self.api.search_art(query, start_date or None, end_date or None)
+        if response.ok:
+            for art in response.json():
+                print(f"{art['article_id']}: {art['title']}")
+        else:
+            print("Search failed.")

@@ -54,3 +54,18 @@ class NewsRepository:
 
         return last_article_id
 
+    def get_today_news(self):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor(dictionary=True)  # Return results as dicts
+        cursor.execute(
+            """
+            SELECT title, description, content, source, url, published_at FROM articles where 
+            day(published_at) = day(curdate());
+            """
+        )
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        return rows
+

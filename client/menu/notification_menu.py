@@ -11,21 +11,21 @@ class NotificationMenu(BaseMenu):
             choice = input("Enter your choice: ")
 
             if choice == "1":
-                resp = self.api.get_notifications()
-                if resp.ok:
-                    for n in resp.json():
-                        print(f"{n['notification_id']}: {n['message']}")
-                else:
-                    print("Failed to fetch notifications.")
-                self.pause()
+                self._view_notifications()
             elif choice == "2":
-                print("Notification configuration not implemented.")
-                self.pause()
+                print("Notification ")
             elif choice == "3":
-                print("Keyword addition not implemented.")
-                self.pause()
+                print("Keyword ")
             elif choice == "4":
                 break
             else:
                 print("Invalid choice.")
-                self.pause()
+
+    def _view_notifications(self):
+        response = self.api.get_notifications()
+        if response.ok:
+            for n in response.json():
+                print(f"{n['notification_id']}: {n['message']}")
+        else:
+            print("Failed to fetch notifications.")
+

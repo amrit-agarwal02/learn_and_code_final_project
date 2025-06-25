@@ -59,3 +59,14 @@ class ExternalServerRepository:
         conn.commit()
         cursor.close()
         conn.close()
+
+    def get_server_details(self):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT server_name,api_key FROM external_server")
+        server_details = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+        return server_details

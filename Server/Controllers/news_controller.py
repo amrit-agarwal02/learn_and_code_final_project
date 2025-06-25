@@ -6,3 +6,6 @@ class NewsController:
 
     def fetch_news(self):
         return self.news_service.sync_news_from_api()
+
+    def fetch_today_news(self):
+        return self.news_service.today_news()

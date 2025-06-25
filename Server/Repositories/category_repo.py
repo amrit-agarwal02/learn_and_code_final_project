@@ -92,6 +92,3 @@ class CategoryRepository:
         cursor.close()
         conn.close()
 
-obj = CategoryRepository()
-
-print(obj.get_all())

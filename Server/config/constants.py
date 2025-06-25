@@ -20,5 +20,5 @@ CATEGORY_KEYWORDS = {
         "machine learning", "robotics", "data", "cloud", "iot", "cybersecurity", "quantum",
         "gadgets", "startup", "apps", "android", "ios"
     ],
-    "All": []  # fallback
+    "All": []
 }

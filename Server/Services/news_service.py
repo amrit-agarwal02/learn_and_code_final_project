@@ -138,4 +138,8 @@ class NewsService:
             result = self.store_articles(articles, active_api)
             return result
 
+    def today_news(self):
+        return self.news_repo.get_today_news()
+
+
 
