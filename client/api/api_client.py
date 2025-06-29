@@ -5,7 +5,9 @@ class APIClient:
     def __init__(self):
         self.token = None
         self.user_role = None
-        self.email = None
+        # self.email = None
+        # self.user_id = None
+        self.user_name = None
 
     def set_token(self, token):
         self.token = token
@@ -29,7 +31,7 @@ class APIClient:
             import jwt
             payload = jwt.decode(self.token, options={"verify_signature": False})
             self.user_role = payload.get("role")
-            self.email = payload.get("sub")
+            self.user_name = payload.get("user_name")
         return response
 
     def get_articles(self):
@@ -101,7 +103,8 @@ class APIClient:
         response = requests.put(f"{API_BASE_URL}/admin/external-servers/{server_id}/api-key?api_key={api_key}", headers=self._headers())
         return response
 
-    def add_category(self, category_name):
-        data = {"category_name": category_name}
+    def add_category(self, category_name, category_keywords):
+        data = {"category_name": category_name,
+                "category_keywords": category_keywords}
         response = requests.post(f"{API_BASE_URL}/admin/category", json=data, headers=self._headers())
         return response

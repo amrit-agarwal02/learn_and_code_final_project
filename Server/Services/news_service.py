@@ -141,5 +141,8 @@ class NewsService:
     def today_news(self):
         return self.news_repo.get_today_news()
 
-
+    def get_news_by_date_range(self, start_date, end_date, category_name):
+        category_id_response = self.category_repo.get_id_by_name(category_name)
+        category_id = int(category_id_response.get('category_id'))
+        return self.news_repo.get_news_by_date_range(start_date,end_date,category_id)
 

@@ -1,9 +1,18 @@
+from client.api.api_client import APIClient
 from client.menu.base_menu import BaseMenu
 from client.menu.notification_menu import NotificationMenu
 from client.menu.headlines_menu import HeadlinesMenu
+from client.api.api_client import APIClient
+from datetime import datetime
 
 class UserMenu(BaseMenu):
+
+    def __init__(self, api_client: APIClient):
+        self.api_client = api_client
+
     def show(self):
+        print("Welcome to the News Application, ", self.api_client.user_name)
+        print(datetime.now())
         while True:
             print("\nUser Menu:")
             print("1. Headlines")

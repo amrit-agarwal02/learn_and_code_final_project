@@ -2,7 +2,7 @@ from Server.Repositories.user_repo import UserRepository
 from Server.schemas.auth import UserCredentials
 from Server.schemas.user import UserCreate
 from Server.Utils.password_utils import verify_password
-from Server.Utils.jwt_handler import create_access_token
+from Server.Utils.jwt_handler import create_access_token,decode_access_token
 
 class AuthService:
     def __init__(self):
@@ -25,6 +25,7 @@ class AuthService:
            token_payload = {
                "sub": user["email"],
                "user_id": user["user_id"],
+               "user_name": user["user_name"],
                "role": user["role"]
            }
            access_token = create_access_token(token_payload)
@@ -33,6 +34,7 @@ class AuthService:
         return {
             "access_token": access_token,
             "token_type": "bearer",
+            "user_name": user["user_name"],
             "user_role": user["role"]
         }
 

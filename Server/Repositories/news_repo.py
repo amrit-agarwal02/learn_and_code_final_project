@@ -56,7 +56,7 @@ class NewsRepository:
 
     def get_today_news(self):
         conn = DbConnection.get_db_connection()
-        cursor = conn.cursor(dictionary=True)  # Return results as dicts
+        cursor = conn.cursor(dictionary=True)
         cursor.execute(
             """
             SELECT title, description, content, source, url, published_at FROM articles where 
@@ -69,3 +69,18 @@ class NewsRepository:
 
         return rows
 
+    def get_news_by_date_range(self, start_date, end_date, category_id):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(
+            f"""
+            select title, description, content, source, url, published_at from articles t1 join article_category_mapping t2 
+            on t1.article_id = t2.article_id  
+            where date(published_at)>="{start_date}" and date(published_at)<="{end_date}"
+            and category_id = {category_id};
+            """
+        )
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return rows
