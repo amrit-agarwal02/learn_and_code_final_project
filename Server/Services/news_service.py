@@ -146,3 +146,6 @@ class NewsService:
         category_id = int(category_id_response.get('category_id'))
         return self.news_repo.get_news_by_date_range(start_date,end_date,category_id)
 
+    def get_news_by_keyword(self, keyword):
+        return self.news_repo.get_news_by_keyword(keyword)
+

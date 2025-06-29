@@ -84,3 +84,18 @@ class NewsRepository:
         cursor.close()
         conn.close()
         return rows
+
+    def get_news_by_keyword(self, keyword):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(
+            f"""
+                    select title, description, content, source, url, published_at from articles 
+                    where concat_ws(' ',title,description, content) 
+                    like "%{keyword}%";
+            """
+        )
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return rows

@@ -16,3 +16,7 @@ def get_today_news():
 def get_today_news_by_date_range(start_date,
                                  end_date, category_name):
     return controller.fetch_news_by_date_range(start_date, end_date, category_name)
+
+@router.get("/search")
+def search_articles(keyword):
+    return controller.fetch_news_by_keyword(keyword)

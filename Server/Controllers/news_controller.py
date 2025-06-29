@@ -12,3 +12,6 @@ class NewsController:
 
     def fetch_news_by_date_range(self, start_date, end_date, category_name):
         return self.news_service.get_news_by_date_range(start_date,end_date, category_name)
+
+    def fetch_news_by_keyword(self, keyword):
+        return self.news_service.get_news_by_keyword(keyword)
