@@ -17,3 +17,9 @@ class ExternalServerController:
             return self.server_service.get_external_server_details()
         except Exception as e:
             raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+
+    def update_server_key(self, server_id: int, new_api_key: str):
+        try:
+            return self.server_service.update_server_key(server_id, new_api_key)
+        except Exception as e:
+            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))

@@ -13,3 +13,8 @@ def get_all_external_servers(user=Depends(admin_required)):
 def get_server_details(user=Depends(admin_required)):
     controller = ExternalServerController()
     return controller.get_external_server_details()
+
+@router.patch("/update-server")
+def update_server_key(server_id,updated_api_key, user=Depends(admin_required)):
+    controller = ExternalServerController()
+    return controller.update_server_key(server_id, updated_api_key)

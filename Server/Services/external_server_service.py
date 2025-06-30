@@ -9,3 +9,6 @@ class ExternalServerService:
 
     def get_external_server_details(self):
         return self.server_repo.get_server_details()
+
+    def update_server_key(self, server_id: int, new_api_key: str):
+        return self.server_repo.update_server_api_key(server_id, new_api_key)

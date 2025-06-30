@@ -36,18 +36,18 @@ class ExternalServerRepository:
         conn.close()
         return server
 
-    def update_server_api_key(self, server_id: int, new_api_key: str) -> bool:
+    def update_server_api_key(self, server_id: int, new_api_key: str) -> dict:
         conn = DbConnection.get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "UPDATE external_server SET api_key = %s, last_accessed = NOW() WHERE server_id = %s",
+            "UPDATE external_server SET api_key = %s WHERE server_id = %s",
             (new_api_key, server_id)
         )
         conn.commit()
         updated = cursor.rowcount > 0
         cursor.close()
         conn.close()
-        return updated
+        return {'API Key Updated Status ': "Success" if updated else "Failure"}
 
     def update_last_accessed(self, server_id: int):
         conn = DbConnection.get_db_connection()
