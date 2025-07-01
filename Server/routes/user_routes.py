@@ -1,13 +1,14 @@
 from fastapi import APIRouter,Depends
 from Server.Utils.jwt_handler import get_current_user
-
+from Server.schemas.article import ArticleSave, ArticleDelete
 from Server.Controllers.notification_controller import NotificationController
 from Server.Utils.jwt_handler import get_current_user
 from Server.schemas.notification import NotificationRequest
+from Server.Controllers.news_controller import NewsController
 
 router = APIRouter(prefix="/user", tags=["user"])
 controller = NotificationController()
-
+news_controller = NewsController()
 
 @router.post("/notification/setting")
 def set_notification_config(data: NotificationRequest, user = Depends(get_current_user)):
@@ -32,3 +33,20 @@ def get_today_news_by_date_range(start_date,
 def search_articles(keyword, user = Depends(get_current_user)):
     return controller.fetch_news_by_keyword(keyword)
 
+@router.get("/notifications/view")
+def get_notification_for_user(user = Depends(get_current_user)):
+    return controller.get_notification_for_user(user["user_id"])
+
+@router.post("/article/save")
+def save_news_article_for_user(article_data: ArticleSave,user = Depends(get_current_user)):
+    article_id = article_data.article_id
+    return news_controller.save_news_article_for_user(user["user_id"], article_id)
+
+@router.get("/saved-articles/view")
+def get_saved_articles_for_user(user = Depends(get_current_user)):
+    return news_controller.get_saved_articles_for_user(user["user_id"])
+
+@router.delete("/saved-articles/delete")
+def delete_saved_articles_for_user(article_data: ArticleDelete,user = Depends(get_current_user)):
+    article_id = article_data.article_id
+    return news_controller.delete_saved_articles_for_user(user["user_id"], article_id)

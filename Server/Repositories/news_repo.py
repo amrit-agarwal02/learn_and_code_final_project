@@ -99,3 +99,50 @@ class NewsRepository:
         cursor.close()
         conn.close()
         return rows
+
+    def save_news_article_for_user(self, user_id, article_id):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            INSERT INTO saved_article (user_id, article_id)
+            VALUES (%s, %s)
+            """,
+            (
+                user_id,
+                article_id
+            )
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return cursor.lastrowid
+
+    def get_saved_articles_for_user(self, user_id):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = """
+        SELECT t1.article_id, t2.title, t2.description, t2.content, t2.url 
+        from saved_article t1 join articles t2 on t1.article_id = t2.article_id
+        where t1.user_id = %s;
+        """
+        cursor.execute(query,(user_id,))
+        saved_articles = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return saved_articles
+
+    def delete_saved_articles_for_user(self, user_id,article_id):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = """
+        DELETE from saved_article 
+        where user_id = %s and article_id = %s;
+        """
+        cursor.execute(query,(user_id,article_id))
+        deleted_rows = cursor.rowcount
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return {"deleted": f"{deleted_rows} saved articles"}

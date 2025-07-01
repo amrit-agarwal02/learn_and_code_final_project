@@ -155,3 +155,11 @@ class NewsService:
     def get_news_by_keyword(self, keyword):
         return self.news_repo.get_news_by_keyword(keyword)
 
+    def save_news_article_for_user(self, user_id, article_id):
+        return self.news_repo.save_news_article_for_user(user_id, article_id)
+
+    def get_saved_articles_for_user(self, user_id):
+        return self.news_repo.get_saved_articles_for_user(user_id)
+
+    def delete_saved_articles_for_user(self, user_id, article_id):
+        return self.news_repo.delete_saved_articles_for_user(user_id, article_id)

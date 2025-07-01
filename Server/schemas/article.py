@@ -13,3 +13,9 @@ class ArticleRead(ArticleBase):
 
     class Config:
         orm_mode = True
+
+class ArticleSave(BaseModel):
+    article_id: int
+
+class ArticleDelete(BaseModel):
+    article_id: int

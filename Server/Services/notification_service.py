@@ -22,3 +22,6 @@ class NotificationService:
 
     def store_notifications(self):
         return self.notification_repo.store_notifications()
+
+    def get_notification_for_user(self, user_id):
+        return self.notification_repo.get_unread_notifications_by_user(user_id)
