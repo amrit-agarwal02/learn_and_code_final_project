@@ -68,3 +68,22 @@ class NotificationRepository:
         return {
             "inserted_notifications": inserted_rows
         }
+
+    def get_unread_notifications_grouped_by_user(self):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("""
+         SELECT u.email, u.user_id, 
+        GROUP_CONCAT(CONCAT('Title - ', n.message, '\nURL   - ', a.url, '\n') SEPARATOR '\n') AS messages
+        FROM notifications n
+        JOIN users u ON u.user_id = n.user_id
+        JOIN articles a ON a.article_id = n.article_id
+        WHERE n.is_read = 0
+        GROUP BY u.user_id;
+        """)
+        results = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+        return results

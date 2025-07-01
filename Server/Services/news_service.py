@@ -6,6 +6,7 @@ from Server.Repositories.external_server_repo import ExternalServerRepository
 from Server.config.constants import API_URL
 from Server.Services.category_classifier import CategoryClassifier
 from Server.Services.category_service import CategoryService
+from Server.Services.notification_service import NotificationService
 from loguru import logger
 
 class NewsService:
@@ -14,6 +15,7 @@ class NewsService:
         self.external_api_repo = ExternalServerRepository()
         self.category_repo = CategoryRepository()
         self.classifier = CategoryClassifier()
+        self.notification_service = NotificationService()
 
     def get_active_api(self):
         apis = self.external_api_repo.get_api_status()
@@ -136,6 +138,10 @@ class NewsService:
         else:
             articles = self.parse_articles_newsapi(data, active_api_server_id)
             result = self.store_articles(articles, active_api)
+            notifications_stored = self.notification_service.store_notifications()
+            print("Notifications Stored :", notifications_stored)
+            logger.info(f"Notifications Stored result: {notifications_stored}")
+            self.notification_service.send_unread_notifications()
             return result
 
     def today_news(self):
