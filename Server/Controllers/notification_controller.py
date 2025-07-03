@@ -30,3 +30,9 @@ class NotificationController:
         except Exception as e:
             raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
 
+    def update_notification_setting(self, user_id, setting_id, notification_setting):
+        try:
+            return self.notification_service.update_notification_setting(user_id, setting_id, notification_setting)
+        except Exception as e:
+            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+

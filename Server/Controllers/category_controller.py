@@ -42,3 +42,6 @@ class CategoryController:
             return {"message": f"Category {category_id} deleted successfully"}
         except Exception as e:
             raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+
+    def hide_category(self, category_id):
+        return self.service.hide_category(category_id)

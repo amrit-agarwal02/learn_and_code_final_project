@@ -3,7 +3,7 @@ from Server.Utils.jwt_handler import get_current_user
 from Server.schemas.article import ArticleSave, ArticleDelete
 from Server.Controllers.notification_controller import NotificationController
 from Server.Utils.jwt_handler import get_current_user
-from Server.schemas.notification import NotificationRequest
+from Server.schemas.notification import NotificationRequest, NotificationSettingUpdate
 from Server.Controllers.news_controller import NewsController
 
 router = APIRouter(prefix="/user", tags=["user"])
@@ -20,11 +20,15 @@ def set_notification_config(data: NotificationRequest, user = Depends(get_curren
 def get_notification_config(user = Depends(get_current_user)):
     return controller.get_user_notification_setting(user)
 
+@router.put("/notification/settings/{setting_id}")
+def update_notification_setting(setting_id: int, notification_setting: NotificationSettingUpdate, user=Depends(get_current_user)):
+    return controller.update_notification_setting(user["user_id"], setting_id, notification_setting)
+
 @router.get("/today_news")
 def get_today_news(user = Depends(get_current_user)):
     return controller.fetch_today_news()
 
-@router.get("/date_range_news")
+@router.get("/date_range_news/{start_date}/{end_date}")
 def get_today_news_by_date_range(start_date,
                                  end_date, category_name,user = Depends(get_current_user)):
     return controller.fetch_news_by_date_range(start_date, end_date, category_name)

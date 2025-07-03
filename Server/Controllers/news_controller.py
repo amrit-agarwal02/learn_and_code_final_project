@@ -1,8 +1,10 @@
 from Server.Services.news_service import NewsService
+from Server.Services.report_service import ReportService
 
 class NewsController:
     def __init__(self):
         self.news_service = NewsService()
+        self.report_service = ReportService()
 
     def fetch_news(self):
         return self.news_service.sync_news_from_api()
@@ -24,3 +26,12 @@ class NewsController:
 
     def delete_saved_articles_for_user(self, user_id, article_id):
         return self.news_service.delete_saved_articles_for_user(user_id, article_id)
+
+    def report_article(self, article_id, user_id, reason):
+        return self.report_service.report_article(article_id, user_id, reason)
+
+    def get_reported_articles(self):
+        return self.report_service.get_reported_articles()
+
+    def hide_article(self, article_id):
+        return self.report_service.hide_article(article_id)

@@ -110,3 +110,11 @@ class CategoryRepository:
         conn.commit()
         cursor.close()
         conn.close()
+
+    def hide_category(self, category_id):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("UPDATE categories SET is_visible = FALSE WHERE category_id = %s", (category_id,))
+        conn.commit()
+        cursor.close()
+        conn.close()

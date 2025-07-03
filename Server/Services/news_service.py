@@ -8,6 +8,8 @@ from Server.Services.category_classifier import CategoryClassifier
 from Server.Services.category_service import CategoryService
 from Server.Services.notification_service import NotificationService
 from loguru import logger
+from Server.config.constants import REPORT_THRESHOLD
+
 
 class NewsService:
     def __init__(self):

@@ -25,3 +25,6 @@ class NotificationService:
 
     def get_notification_for_user(self, user_id):
         return self.notification_repo.get_unread_notifications_by_user(user_id)
+
+    def update_notification_setting(self, user_id, setting_id, notification_setting):
+        return self.notification_repo.update_notification_setting(user_id, setting_id, notification_setting)

@@ -1,12 +1,16 @@
+from unicodedata import category
+
 from Server.config.database import DbConnection
 from Server.Repositories.category_repo import CategoryRepository
 from Server.Repositories.news_repo import NewsRepository
+from Server.schemas.notification import NotificationSettingUpdate
 
 
 class NotificationRepository:
 
     def __init__(self):
         self.news_repo = NewsRepository()
+        self.category_repo = CategoryRepository()
 
     def save(self, user_id: int, category_id: int, keyword):
         conn = DbConnection.get_db_connection()
@@ -45,6 +49,23 @@ class NotificationRepository:
         conn.close()
 
         return rows
+
+    def update_notification_setting(self, user_id, setting_id, notification_setting: NotificationSettingUpdate):
+        category_id = self.category_repo.get_id_by_name(notification_setting.category)['category_id']
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+                UPDATE user_notification_setting 
+                SET category_id = %s, is_enabled = %s, keyword = %s
+                WHERE setting_id = %s AND user_id = %s
+            """, (category_id, notification_setting.is_enabled, notification_setting.keyword, setting_id, user_id))
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return {
+            "Prefrence updated successfully"
+        }
 
     def store_notifications(self):
         conn = DbConnection.get_db_connection()

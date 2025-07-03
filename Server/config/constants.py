@@ -27,3 +27,5 @@ SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 EMAIL_SENDER = "amrit02agarwal@gmail.com"
 EMAIL_PASSWORD = "cnpw iaiy hued pecc"
+
+REPORT_THRESHOLD = 3
