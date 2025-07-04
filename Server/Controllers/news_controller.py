@@ -35,3 +35,6 @@ class NewsController:
 
     def hide_article(self, article_id):
         return self.report_service.hide_article(article_id)
+
+    def get_article_by_id(self, user_id:int, article_id: int):
+        return self.news_service.get_article_by_id(user_id, article_id)

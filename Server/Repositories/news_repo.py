@@ -209,3 +209,30 @@ class NewsRepository:
         cursor.close()
         conn.close()
         return results
+
+    def get_article_by_id(self, article_id: int):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = """
+                    Select title, description, content, source, url, published_at 
+                    FROM articles a
+                    JOIN article_category_mapping acm ON a.article_id = acm.article_id
+                    JOIN category c ON acm.category_id = c.category_id 
+                    where
+                    a.article_id = %s
+                    AND c.is_visible = TRUE
+                    AND a.is_visible = TRUE
+                    """
+        cursor.execute(query, (article_id,))
+        article = cursor.fetchone()
+        cursor.close()
+        return article
+
+    def mark_article_as_read(self, user_id: int, article_id: int):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        insert_query = "INSERT INTO read_history (user_id, article_id) VALUES (%s, %s);"
+        cursor.execute(insert_query, (user_id, article_id))
+        conn.commit()
+        cursor.close()
+        return {"Read": f"Article id {article_id} marked as read"}

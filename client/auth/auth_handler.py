@@ -1,3 +1,4 @@
+from getpass import getpass
 from client.api.api_client import APIClient
 from client.utils import validate_email
 
@@ -8,7 +9,7 @@ class AuthHandler:
     def login(self) -> bool:
         print("\nLogin ")
         email = input("Email: ")
-        password = input("Password: ")
+        password = getpass("Password: ")
         response = self.api.login(email, password)
         if response.ok:
             print("Login successful!")

@@ -166,3 +166,12 @@ class NewsService:
 
     def delete_saved_articles_for_user(self, user_id, article_id):
         return self.news_repo.delete_saved_articles_for_user(user_id, article_id)
+
+    def get_article_by_id(self,user_id ,article_id: int):
+        article = self.news_repo.get_article_by_id(article_id)
+        if article:
+            self.news_repo.mark_article_as_read(user_id, article_id)
+        return article
+
+    def mark_article_as_read(self, user_id: int, article_id: int):
+        return self.news_repo.mark_article_as_read(user_id, article_id)
