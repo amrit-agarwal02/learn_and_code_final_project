@@ -3,7 +3,7 @@ from client.menu.base_menu import BaseMenu
 class HeadlinesMenu(BaseMenu):
     def show(self):
         while True:
-            print("\nNotifications Menu:")
+            print("\nHeadlines Menu:")
             print("1. Today")
             print("2. Date Range")
             print("3. Logout")

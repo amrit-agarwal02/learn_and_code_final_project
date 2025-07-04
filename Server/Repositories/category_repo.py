@@ -118,3 +118,14 @@ class CategoryRepository:
         conn.commit()
         cursor.close()
         conn.close()
+
+    def update_visibility(self, category_id: int, is_visible: bool):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE category SET is_visible = %s WHERE category_id = %s
+        """, (is_visible, category_id))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return {"message": "Category visibility updated"}

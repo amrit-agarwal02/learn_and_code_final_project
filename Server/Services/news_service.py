@@ -119,7 +119,8 @@ class NewsService:
         if not active_api:
             return {"error": "No active external APIs available"}
 
-        active_api_url = API_URL.get(active_api["server_name"])
+        active_api_server_name = active_api["server_name"]
+        active_api_url = API_URL.get(active_api_server_name)
         active_api_server_id = active_api["server_id"]
 
         logger.info(f"Fetching news from {active_api_url}")

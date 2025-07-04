@@ -23,13 +23,13 @@ class UserMenu(BaseMenu):
             choice = input("Enter your choice: ")
 
             if choice == "1":
-                HeadlinesMenu(self.api).show()
+                HeadlinesMenu(self.api_client).show()
             elif choice == "2":
                 self._view_saved_art()
             elif choice == "3":
                 self._search_art()
             elif choice == "4":
-                NotificationMenu(self.api).show()
+                NotificationMenu(self.api_client).show()
             elif choice == "5":
                 print("Logging out...")
                 break

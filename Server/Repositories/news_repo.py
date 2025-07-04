@@ -59,8 +59,13 @@ class NewsRepository:
         cursor = conn.cursor(dictionary=True)
         cursor.execute(
             """
-            SELECT title, description, content, source, url, published_at FROM articles where 
-            day(published_at) = day(curdate());
+            SELECT title, description, content, source, url, published_at 
+            FROM articles a
+            JOIN article_category_mapping acm ON a.article_id = acm.article_id
+            JOIN category c ON acm.category_id = c.category_id 
+            where day(published_at) = day(curdate())
+            AND c.is_visible = TRUE
+            AND a.is_visible = TRUE;
             """
         )
         rows = cursor.fetchall()
@@ -74,10 +79,14 @@ class NewsRepository:
         cursor = conn.cursor(dictionary=True)
         cursor.execute(
             f"""
-            select title, description, content, source, url, published_at from articles t1 join article_category_mapping t2 
-            on t1.article_id = t2.article_id  
+            select title, description, content, source, url, published_at 
+            FROM articles a
+            JOIN article_category_mapping acm ON a.article_id = acm.article_id
+            JOIN category c ON acm.category_id = c.category_id  
             where date(published_at)>="{start_date}" and date(published_at)<="{end_date}"
-            and category_id = {category_id};
+            and c.category_id = {category_id}
+            AND c.is_visible = TRUE
+            AND a.is_visible = TRUE;
             """
         )
         rows = cursor.fetchall()
@@ -90,8 +99,14 @@ class NewsRepository:
         cursor = conn.cursor(dictionary=True)
         cursor.execute(
             f"""
-                    select title, description, content, source, url, published_at from articles 
-                    where concat_ws(' ',title,description, content) 
+                    select title, description, content, source, url, published_at 
+                    FROM articles a
+                    JOIN article_category_mapping acm ON a.article_id = acm.article_id
+                    JOIN category c ON acm.category_id = c.category_id 
+                    where 
+                    c.is_visible = TRUE
+                    AND a.is_visible = TRUE
+                    AND concat_ws(' ',title,description, content) 
                     like "%{keyword}%";
             """
         )

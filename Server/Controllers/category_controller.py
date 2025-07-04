@@ -45,3 +45,6 @@ class CategoryController:
 
     def hide_category(self, category_id):
         return self.service.hide_category(category_id)
+
+    def toggle_category_visibility(self, category_id: int, is_visible: bool):
+        return self.service.set_category_visibility(category_id, is_visible)

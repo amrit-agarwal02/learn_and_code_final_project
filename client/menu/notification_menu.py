@@ -5,8 +5,8 @@ class NotificationMenu(BaseMenu):
         while True:
             print("\nNotifications Menu:")
             print("1. View Notifications")
-            print("2. Configure Notifications (stub)")
-            print("3. Add Keyword (stub)")
+            print("2. Configure Notifications ")
+            print("3. Add Keyword ")
             print("4. Back")
             choice = input("Enter your choice: ")
 

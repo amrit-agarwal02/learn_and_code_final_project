@@ -11,8 +11,6 @@ class ArticleRead(ArticleBase):
     id: int
     author_id: int
 
-    class Config:
-        orm_mode = True
 
 class ArticleSave(BaseModel):
     article_id: int

@@ -59,3 +59,6 @@ class CategoryService:
 
     def hide_category(self, category_id):
         return self.repo.hide_category(category_id)
+
+    def set_category_visibility(self, category_id: int, is_visible: bool):
+        return self.repo.update_visibility(category_id, is_visible)

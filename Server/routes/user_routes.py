@@ -26,16 +26,16 @@ def update_notification_setting(setting_id: int, notification_setting: Notificat
 
 @router.get("/today_news")
 def get_today_news(user = Depends(get_current_user)):
-    return controller.fetch_today_news()
+    return news_controller.fetch_today_news()
 
 @router.get("/date_range_news/{start_date}/{end_date}")
 def get_today_news_by_date_range(start_date,
                                  end_date, category_name,user = Depends(get_current_user)):
-    return controller.fetch_news_by_date_range(start_date, end_date, category_name)
+    return news_controller.fetch_news_by_date_range(start_date, end_date, category_name)
 
 @router.get("/search")
 def search_articles(keyword, user = Depends(get_current_user)):
-    return controller.fetch_news_by_keyword(keyword)
+    return news_controller.fetch_news_by_keyword(keyword)
 
 @router.get("/notifications/view")
 def get_notification_for_user(user = Depends(get_current_user)):
