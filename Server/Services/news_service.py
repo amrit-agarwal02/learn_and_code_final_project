@@ -1,6 +1,8 @@
 import requests
 from Server.Repositories.news_repo import NewsRepository
 from Server.Repositories.category_repo import CategoryRepository
+from Server.Repositories.personalization_repo import PersonalizationRepo
+from Server.Services.blocked_keywords_service import BlockedKeywordsService
 from Server.schemas.news import NewsArticleCreate
 from Server.Repositories.external_server_repo import ExternalServerRepository
 from Server.config.constants import API_URL
@@ -18,6 +20,8 @@ class NewsService:
         self.category_repo = CategoryRepository()
         self.classifier = CategoryClassifier()
         self.notification_service = NotificationService()
+        self.blocked_keywords_service = BlockedKeywordsService()
+        self.personalization_repo = PersonalizationRepo()
 
     def get_active_api(self):
         apis = self.external_api_repo.get_api_status()
@@ -147,16 +151,22 @@ class NewsService:
             self.notification_service.send_unread_notifications()
             return result
 
-    def today_news(self):
-        return self.news_repo.get_today_news()
+    def today_news(self, user_id:int):
+        today_articles = self.news_repo.get_today_news()
+        today_articles = self.filter_blocked_articles(today_articles)
+        return self.personalize_articles(user_id, today_articles)
 
-    def get_news_by_date_range(self, start_date, end_date, category_name):
+    def get_news_by_date_range(self,user_id, start_date, end_date, category_name):
         category_id_response = self.category_repo.get_id_by_name(category_name)
         category_id = int(category_id_response.get('category_id'))
-        return self.news_repo.get_news_by_date_range(start_date,end_date,category_id)
+        news_articles = self.news_repo.get_news_by_date_range(start_date,end_date,category_id)
+        news_articles = self.filter_blocked_articles(news_articles)
+        return self.personalize_articles(user_id, news_articles)
 
-    def get_news_by_keyword(self, keyword):
-        return self.news_repo.get_news_by_keyword(keyword)
+    def get_news_by_keyword(self, user_id, keyword):
+        articles = self.news_repo.get_news_by_keyword(keyword)
+        articles = self.filter_blocked_articles(articles)
+        return self.personalize_articles(user_id, news_articles)
 
     def save_news_article_for_user(self, user_id, article_id):
         return self.news_repo.save_news_article_for_user(user_id, article_id)
@@ -175,3 +185,26 @@ class NewsService:
 
     def mark_article_as_read(self, user_id: int, article_id: int):
         return self.news_repo.mark_article_as_read(user_id, article_id)
+
+    def filter_blocked_articles(self, articles):
+        blocked_keywords = self.blocked_keywords_service.get_all_blocked_keywords()
+        filtered = []
+        for article in articles:
+            title = (article.get('title') or '').lower()
+            content = (article.get('content') or '').lower()
+            if any(kw.lower() in title or kw.lower() in content for kw in blocked_keywords):
+                continue
+            filtered.append(article)
+        return filtered
+
+    def personalize_articles(self, user_id, articles):
+        category_counts = self.personalization_repo.get_user_category_counts(user_id)
+        personalized = []
+        for article in articles:
+            score = 0
+            category = article.get('category_name')
+            print("\n"*10,category)
+            score += category_counts.get(category, 0) * 3  # weight as you like
+            personalized.append((score, article))
+        personalized.sort(reverse=True, key=lambda x: x[0])
+        return [a for score, a in personalized[:20]]

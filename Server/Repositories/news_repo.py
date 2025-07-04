@@ -59,7 +59,7 @@ class NewsRepository:
         cursor = conn.cursor(dictionary=True)
         cursor.execute(
             """
-            SELECT title, description, content, source, url, published_at 
+            SELECT title, description, content, source, url, published_at, c.category_name 
             FROM articles a
             JOIN article_category_mapping acm ON a.article_id = acm.article_id
             JOIN category c ON acm.category_id = c.category_id 
@@ -79,7 +79,7 @@ class NewsRepository:
         cursor = conn.cursor(dictionary=True)
         cursor.execute(
             f"""
-            select title, description, content, source, url, published_at 
+            select title, description, content, source, url, published_at, c.category_name
             FROM articles a
             JOIN article_category_mapping acm ON a.article_id = acm.article_id
             JOIN category c ON acm.category_id = c.category_id  
@@ -99,7 +99,7 @@ class NewsRepository:
         cursor = conn.cursor(dictionary=True)
         cursor.execute(
             f"""
-                    select title, description, content, source, url, published_at 
+                    select title, description, content, source, url, published_at, c.category_name
                     FROM articles a
                     JOIN article_category_mapping acm ON a.article_id = acm.article_id
                     JOIN category c ON acm.category_id = c.category_id 
