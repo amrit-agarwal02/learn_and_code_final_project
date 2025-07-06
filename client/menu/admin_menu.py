@@ -52,16 +52,12 @@ class AdminMenu(BaseMenu):
 
     def _add_category(self):
         category_name = input("Enter new category name: ")
-        category_keywords =[]
-        while True:
-            print("Enter 1 to enter next category keyword")
-            print("Enter 2 to stop entering the category keywords")
-            choice = int(input("Choose : "))
-            if(choice==1):
-                input(f"Enter keyword for {category_name} : ")
-            elif(choice==2):
-                break
-            else:
-                print("Wrong Input. Please Enter correct input from option")
+        raw_keywords = input(f"Enter keywords for '{category_name}' (comma-separated): ")
+        category_keywords = [kw.strip().lower() for kw in raw_keywords.split(",") if kw.strip()]
+
+        if not category_keywords:
+            print("No valid keywords entered. Aborting.")
+            return
+
         response = self.api.add_category(category_name, category_keywords)
         print("Category added." if response.ok else "Failed to add category.")

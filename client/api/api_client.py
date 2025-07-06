@@ -5,8 +5,6 @@ class APIClient:
     def __init__(self):
         self.token = None
         self.user_role = None
-        # self.email = None
-        # self.user_id = None
         self.user_name = None
 
     def set_token(self, token):
@@ -38,6 +36,11 @@ class APIClient:
         response = requests.get(f"{API_BASE_URL}/articles/", headers=self._headers())
         return response
 
+    def get_article_by_id(self, article_id):
+        params = {"article_id": article_id}
+        response = requests.get(f"{API_BASE_URL}/news/article/view", headers=self._headers(), params= params)
+        return response
+
     def get_articles_by_category(self, category_id):
         response = requests.get(f"{API_BASE_URL}/articles/?category_id={category_id}", headers=self._headers())
         return response
@@ -51,29 +54,25 @@ class APIClient:
         return response
 
     def get_categories(self):
-        response = requests.get(f"{API_BASE_URL}/categories/", headers=self._headers())
+        response = requests.get(f"{API_BASE_URL}/categories/view-all", headers=self._headers())
         return response
 
     def save_article(self, article_id):
         data = {"article_id": article_id}
-        response = requests.post(f"{API_BASE_URL}/users/saved-articles", json=data, headers=self._headers())
+        response = requests.post(f"{API_BASE_URL}/user/article/save", json=data, headers=self._headers())
         return response
 
     def get_saved_articles(self):
-        response = requests.get(f"{API_BASE_URL}/users/saved-articles", headers=self._headers())
+        response = requests.get(f"{API_BASE_URL}/user/saved-articles/view", headers=self._headers())
         return response
 
     def delete_saved_article(self, saved_id):
-        response = requests.delete(f"{API_BASE_URL}/users/saved-articles/{saved_id}", headers=self._headers())
+        response = requests.delete(f"{API_BASE_URL}/user/saved-articles/delete", headers=self._headers())
         return response
 
-    def search_articles(self, query, start_date=None, end_date=None):
-        params = {"q": query}
-        if start_date:
-            params["start_date"] = start_date
-        if end_date:
-            params["end_date"] = end_date
-        response = requests.get(f"{API_BASE_URL}/articles/search", params=params, headers=self._headers())
+    def search_articles(self, params):
+        params = params
+        response = requests.get(f"{API_BASE_URL}/user/search", params=params, headers=self._headers())
         return response
 
     def get_notifications(self):
@@ -100,11 +99,40 @@ class APIClient:
         return response
 
     def update_external_server_api_key(self, server_id, api_key):
-        response = requests.put(f"{API_BASE_URL}/admin/external-servers/{server_id}/api-key?api_key={api_key}", headers=self._headers())
+        data = {
+            "server_id": server_id,
+            "updated_api_key": api_key
+        }
+        response = requests.patch(f"{API_BASE_URL}/external-servers/update-server",json = data,headers=self._headers())
         return response
 
     def add_category(self, category_name, category_keywords):
         data = {"category_name": category_name,
-                "category_keywords": category_keywords}
-        response = requests.post(f"{API_BASE_URL}/admin/category", json=data, headers=self._headers())
+                "keywords": category_keywords}
+        response = requests.post(f"{API_BASE_URL}/categories/category/create", json=data, headers=self._headers())
         return response
+
+    def get_article_by_date_range(self, start_date, end_date, category_name):
+        url = f"{API_BASE_URL}/user/date_range_news/{start_date}/{end_date}"
+        params = {"category_name": category_name}
+        response = requests.get(url, headers=self._headers(), params=params)
+        return response
+
+    def like_article(self, article_id):
+        url = f"{API_BASE_URL}/feedback/like/{article_id}"
+        response = requests.post(url, headers=self._headers())
+        return response
+
+    def dislike_article(self, article_id):
+        url = f"{API_BASE_URL}/feedback/dislike/{article_id}"
+        response = requests.post(url, headers=self._headers())
+        return response
+
+    def report_article(self, article_id, reason = None):
+        url = f"{API_BASE_URL}/news/articles/{article_id}/report"
+        response = requests.post(url, headers=self._headers())
+        return response
+
+
+
+
