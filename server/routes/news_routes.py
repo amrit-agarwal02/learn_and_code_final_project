@@ -12,9 +12,6 @@ category_controller = CategoryController()
 def sync_news():
     return news_controller.fetch_news()
 
-@router.put("/admin/category/{category_id}/hide")
-def hide_category(category_id: int,user=Depends(admin_required)):
-    return category_controller.hide_category(category_id)
 
 @router.post("/articles/{article_id}/report")
 def report_article(article_id: int, user = Depends(get_current_user), reason: Optional[str] = None):
@@ -24,7 +21,7 @@ def report_article(article_id: int, user = Depends(get_current_user), reason: Op
 def get_reported_articles(user= Depends(admin_required)):
     return news_controller.get_reported_articles()
 
-@router.put("/admin/hide/article/{article_id}")
+@router.put("/admin/hide/article")
 def hide_article(article_id: int,user=Depends(admin_required)):
     return news_controller.hide_article(article_id)
 

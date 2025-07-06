@@ -29,7 +29,7 @@ class UserMenu(BaseMenu):
             elif choice == "3":
                 self._search_art()
             elif choice == "4":
-                NotificationMenu(self.api_client).show()
+                NotificationMenu(self.api_client).handle_input()
             elif choice == "5":
                 print("Logging out...")
                 break
@@ -63,8 +63,28 @@ class UserMenu(BaseMenu):
         response = self.api_client.get_saved_articles()
         if response.ok:
             self.display_articles(response.json())
+            self._saved_articles_menu()
         else:
             print("Failed to fetch saved art.")
+
+    def _saved_articles_menu(self):
+        while True:
+            print("\nOptions:")
+            print("1. Delete a saved article")
+            print("2. Back to menu")
+            print("3. Logout")
+
+            choice = input("Enter your choice: ").strip()
+
+            if choice == "1":
+                self._delete_saved_article()
+            elif choice == "2":
+                return
+            elif choice == "3":
+                print("Logging out...")
+                exit(0)
+            else:
+                print("Invalid choice. Please try again.")
 
     def _delete_saved_article(self):
         saved_id = input("Enter Saved Article ID to delete: ")
@@ -97,3 +117,5 @@ class UserMenu(BaseMenu):
             self.display_articles(articles)
         else:
             print("Search failed.")
+
+

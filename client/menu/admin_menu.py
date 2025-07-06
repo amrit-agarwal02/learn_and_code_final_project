@@ -8,7 +8,10 @@ class AdminMenu(BaseMenu):
             print("2. View external server details")
             print("3. Update/Edit external server API key")
             print("4. Add new News Category")
-            print("5. Logout")
+            print("5. Block Article")
+            print("6. Block Entire Category")
+            print("7. Block Keyword")
+            print("8. Log out")
             choice = input("Enter your choice: ")
 
             if choice == "1":
@@ -20,6 +23,12 @@ class AdminMenu(BaseMenu):
             elif choice == "4":
                 self._add_category()
             elif choice == "5":
+                self._block_article()
+            elif choice == "6":
+                self._block_category()
+            elif choice == "7":
+                self._block_keyword()
+            elif choice == "8":
                 print("Logging out...")
                 break
             else:
@@ -61,3 +70,24 @@ class AdminMenu(BaseMenu):
 
         response = self.api.add_category(category_name, category_keywords)
         print("Category added." if response.ok else "Failed to add category.")
+
+    def _block_article(self):
+        article_id = int(input("Enter Article ID to block: ").strip())
+        response = self.api.block_article(article_id)
+        print("Article blocked." if response.ok else "Failed to block article.")
+
+    def _block_category(self):
+        category_id = input("Enter category id to block: ").strip()
+        if not category_id:
+            print("Category id cannot be empty.")
+            return
+        response = self.api.block_category(category_id)
+        print("Category blocked." if response.ok else "Failed to block category.")
+
+    def _block_keyword(self):
+        keyword = input("Enter keyword to block: ").strip()
+        if not keyword:
+            print("Keyword cannot be empty.")
+            return
+        response = self.api.block_keyword(keyword)
+        print("Keyword blocked." if response.ok else "Failed to block keyword.")

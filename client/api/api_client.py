@@ -66,8 +66,9 @@ class APIClient:
         response = requests.get(f"{API_BASE_URL}/user/saved-articles/view", headers=self._headers())
         return response
 
-    def delete_saved_article(self, saved_id):
-        response = requests.delete(f"{API_BASE_URL}/user/saved-articles/delete", headers=self._headers())
+    def delete_saved_article(self, article_id):
+        data = {"article_id": article_id}
+        response = requests.delete(f"{API_BASE_URL}/user/saved-articles/delete",json = data, headers=self._headers())
         return response
 
     def search_articles(self, params):
@@ -76,12 +77,16 @@ class APIClient:
         return response
 
     def get_notifications(self):
-        response = requests.get(f"{API_BASE_URL}/notifications/user/me", headers=self._headers())
+        response = requests.get(f"{API_BASE_URL}/user/notifications/view", headers=self._headers())
         return response
 
     def configure_notification(self, category_id, is_enabled):
         data = {"category_id": category_id, "is_enabled": is_enabled}
-        response = requests.post(f"{API_BASE_URL}/users/notifications/configure", json=data, headers=self._headers())
+        response = requests.post(f"{API_BASE_URL}/user/notification/setting", json=data, headers=self._headers())
+        return response
+
+    def get_notification_setting(self):
+        response = requests.get(f"{API_BASE_URL}/user/notification/settings", headers=self._headers())
         return response
 
     def add_keyword(self, keyword):
@@ -91,7 +96,6 @@ class APIClient:
 
     def get_external_servers(self):
         response = requests.get(f"{API_BASE_URL}/external-servers/all", headers=self._headers())
-        
         return response
 
     def get_external_server_details(self):
@@ -133,6 +137,36 @@ class APIClient:
         response = requests.post(url, headers=self._headers())
         return response
 
+    def block_article(self, article_id):
+        url = f"{API_BASE_URL}/news/admin/hide/article"
+        params = {"article_id": article_id}
+        return requests.put(url,params = params ,headers=self._headers())
+
+    def block_category(self, category_id):
+        url = f"{API_BASE_URL}/categories/admin/category/visibility"
+        params = {"category_id": category_id,
+                "is_visible": False}
+        return requests.put(url, params = params, headers=self._headers())
+
+    def unblock_category(self, category_id):
+        url = f"{API_BASE_URL}/categories/admin/category/visibility"
+        params = {"category_id": category_id,
+                "is_visible": True}
+        return requests.put(url, params = params, headers=self._headers())
+
+    def block_keyword(self, keyword):
+        url = f"{API_BASE_URL}/admin/keywords/keyword/block"
+        params = {
+            "keyword": keyword
+        }
+        return requests.post(url, params= params, headers=self._headers())
+
+    def unblock_keyword(self, keyword):
+        url = f"{API_BASE_URL}/admin/keywords/keyword/unblock"
+        data = {
+            "keyword": keyword
+        }
+        return requests.delete(url, json = data, headers=self._headers())
 
 
 

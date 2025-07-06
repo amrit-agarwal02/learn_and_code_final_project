@@ -15,6 +15,6 @@ def create_category(category: CategoryCreate,user=Depends(admin_required)):
 def get_all_categories(user=Depends(get_current_user)):
     return controller.get_all_categories()
 
-@router.put("/admin/category/{category_id}/visibility")
+@router.put("/admin/category/visibility")
 def toggle_category_visibility(category_id: int, is_visible: bool,  user= Depends(admin_required)):
     return controller.toggle_category_visibility(category_id, is_visible)

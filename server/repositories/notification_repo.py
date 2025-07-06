@@ -38,7 +38,9 @@ class NotificationRepository:
         cursor = conn.cursor(dictionary=True)
         cursor.execute(
             """
-            SELECT * FROM user_notification_setting where 
+            SELECT * FROM user_notification_setting ns
+            join category c on ns.category_id = c.category_id 
+            where 
             user_id = %s;
             """,
             (user["user_id"],)
@@ -114,7 +116,7 @@ class NotificationRepository:
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute("""
-        SELECT *
+        SELECT n.article_id, n.message
         FROM notifications n
         JOIN users u ON u.user_id = n.user_id
         JOIN articles a ON a.article_id = n.article_id
@@ -126,3 +128,21 @@ class NotificationRepository:
         cursor.close()
         conn.close()
         return results
+
+    def set_notifications_read_by_user(self, user_id):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("""
+        Update notifications
+        set is_read = TRUE
+        WHERE is_read = 0
+        and user_id = %s
+        """,(user_id,))
+
+        cursor.close()
+        conn.commit()
+        conn.close()
+        return {
+            f"Notification read by user_id:  {user_id} successfully"
+        }

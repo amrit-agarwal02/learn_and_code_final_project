@@ -10,7 +10,6 @@ from server.services.category_classifier import CategoryClassifier
 from server.services.category_service import CategoryService
 from server.services.notification_service import NotificationService
 from loguru import logger
-from server.config.constants import REPORT_THRESHOLD
 
 
 class NewsService:
@@ -41,10 +40,11 @@ class NewsService:
             self.category_repo.insert_article_category(category_id,article_id)
             logger.info(f"Mapped Article {article_id} to Category '{category_name}'")
 
-    def fetch_news(self, url):
+    def fetch_news(self, url, active_server_id):
         try:
             response = requests.get(url)
             if response.status_code == 200:
+                self.external_api_repo.update_last_accessed(active_server_id)
                 return response.json()
         except requests.RequestException as e:
             print(f"Error fetching news: {e}")
@@ -129,7 +129,7 @@ class NewsService:
 
         logger.info(f"Fetching news from {active_api_url}")
 
-        data = self.fetch_news(active_api_url+active_api["api_key"])
+        data = self.fetch_news(active_api_url+active_api["api_key"], active_api_server_id)
 
         if not data:
             return {"error": f"Failed to fetch news from {active_api['name']}"}
