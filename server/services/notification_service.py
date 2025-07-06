@@ -1,16 +1,20 @@
 from server.repositories.notification_repo import NotificationRepository
 from server.repositories.category_repo import CategoryRepository
+from server.schemas.notification import NotificationRequest
 from server.services.email_service import EmailService
+from server.services.interfaces.notification_interface import INotificationService
 
-class NotificationService:
+
+class NotificationService(INotificationService):
     def __init__(self):
         self.notification_repo = NotificationRepository()
         self.category_repo = CategoryRepository()
         self.email_service = EmailService()
 
-    def save_user_notification_setting(self, user_id, category, keyword):
+    def save_user_notification_setting(self, user_id, notification_setting_data: NotificationRequest):
+        category = notification_setting_data.category
         category_id = self.category_repo.get_id_by_name(category)['category_id']
-        return self.notification_repo.save(user_id,category_id,keyword)
+        return self.notification_repo.save(user_id,category_id,notification_setting_data)
 
     def get_user_notification_setting(self,user):
         return self.notification_repo.get_notification_settings(user)

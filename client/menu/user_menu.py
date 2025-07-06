@@ -104,12 +104,10 @@ class UserMenu(BaseMenu):
         keyword = input("Enter search keyword: ")
         start_date = input("Start date (YYYY-MM-DD): ")
         end_date = input("End date (YYYY-MM-DD): ")
-        sort_by = input("Sort_by (likes or dislikes): ")
         params = {
             "keyword": keyword,
             "start_date": start_date,
-            "end_date": end_date,
-            "sort_by": sort_by
+            "end_date": end_date
         }
         response = self.api_client.search_articles(params)
         if response.ok:

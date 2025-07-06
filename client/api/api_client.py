@@ -80,8 +80,10 @@ class APIClient:
         response = requests.get(f"{API_BASE_URL}/user/notifications/view", headers=self._headers())
         return response
 
-    def configure_notification(self, category_id, is_enabled):
-        data = {"category_id": category_id, "is_enabled": is_enabled}
+    def configure_notification(self, category, is_enabled, keyword = None):
+        data = {"category": category, "is_enabled": is_enabled}
+        if keyword:
+            data["keyword"] = keyword
         response = requests.post(f"{API_BASE_URL}/user/notification/setting", json=data, headers=self._headers())
         return response
 

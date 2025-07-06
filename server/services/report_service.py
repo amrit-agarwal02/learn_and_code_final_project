@@ -1,8 +1,10 @@
 from server.repositories.news_repo import NewsRepository
 from server.config.constants import REPORT_THRESHOLD
 from server.services.email_service import EmailService
+from server.services.interfaces.report_interface import IReportService
 
-class ReportService:
+
+class ReportService(IReportService):
     def __init__(self):
         self.email_service = EmailService()
         self.news_repo = NewsRepository()

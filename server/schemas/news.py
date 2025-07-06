@@ -25,4 +25,3 @@ class SearchArticleRequest(BaseModel):
     keyword: str
     start_date: str
     end_date: str
-    sort_by: Optional[Literal["likes", "dislikes"]] = "likes"

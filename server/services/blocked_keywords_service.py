@@ -1,6 +1,8 @@
 from server.repositories.blocked_keywords_repo import BlockedKeywordsRepo
+from server.services.interfaces.blocked_keywords_interface import IBlockedKeywordsService
 
-class BlockedKeywordsService:
+
+class BlockedKeywordsService(IBlockedKeywordsService):
     def __init__(self):
         self.repo = BlockedKeywordsRepo()
 

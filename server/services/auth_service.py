@@ -1,10 +1,13 @@
+from pydantic import EmailStr
+
 from server.repositories.user_repo import UserRepository
 from server.schemas.auth import UserCredentials
 from server.schemas.user import UserCreate
 from server.utils.password_utils import verify_password
-from server.utils.jwt_handler import create_access_token,decode_access_token
+from server.utils.jwt_handler import create_access_token
+from server.services.interfaces.auth_interface import IAuthService
 
-class AuthService:
+class AuthService(IAuthService):
     def __init__(self):
         self.user_repo = UserRepository()
 
@@ -13,9 +16,11 @@ class AuthService:
             raise ValueError("Email already registered")
         return self.user_repo.create(user)
 
-    def get_user_by_email(self, email: str):
-        return self.user_repo.get_by_email(email)
-
+    def get_user_by_email(self, email: EmailStr):
+        user = self.user_repo.get_by_email(email)
+        if user is None:
+            raise ValueError("Invalid Email")
+        return user
 
     def login(self, user_data: UserCredentials):
         user = self.get_user_by_email(user_data.email)
@@ -37,10 +42,3 @@ class AuthService:
             "user_name": user["user_name"],
             "user_role": user["role"]
         }
-
-
-    def get_user_by_email(self, email: str):
-        user = self.user_repo.get_by_email(email)
-        if user is None:
-            raise ValueError("Invalid Email")
-        return user

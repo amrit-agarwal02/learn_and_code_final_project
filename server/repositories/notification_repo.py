@@ -1,9 +1,11 @@
+from faulthandler import is_enabled
+
 from unicodedata import category
 
 from server.config.database import DbConnection
 from server.repositories.category_repo import CategoryRepository
 from server.repositories.news_repo import NewsRepository
-from server.schemas.notification import NotificationSettingUpdate
+from server.schemas.notification import NotificationSettingUpdate, NotificationRequest
 
 
 class NotificationRepository:
@@ -12,26 +14,74 @@ class NotificationRepository:
         self.news_repo = NewsRepository()
         self.category_repo = CategoryRepository()
 
-    def save(self, user_id: int, category_id: int, keyword):
+    # def save(self, user_id: int, category_id: int, keyword):
+    #     conn = DbConnection.get_db_connection()
+    #     cursor = conn.cursor(dictionary=True)
+    #     cursor.execute(
+    #         """
+    #         INSERT INTO user_notification_setting (user_id, category_id, keyword)
+    #         VALUES (%s, %s, %s)
+    #         """,
+    #         (
+    #             user_id,
+    #             category_id,
+    #             keyword
+    #         )
+    #     )
+    #     conn.commit()
+    #     cursor.close()
+    #     conn.close()
+    #     return {
+    #         "Notification Setting Stored Successfully"
+    #     }
+
+    def save(self, user_id: int, category_id: int, notification_setting_data: NotificationRequest):
+        keyword = notification_setting_data.keyword
+        notification_toggle = notification_setting_data.is_enabled
         conn = DbConnection.get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute(
-            """
-            INSERT INTO user_notification_setting (user_id, category_id, keyword)
-            VALUES (%s, %s, %s)
-            """,
-            (
-                user_id,
-                category_id,
-                keyword
+
+        if keyword:
+            cursor.execute(
+                """
+                SELECT setting_id FROM user_notification_setting
+                WHERE user_id = %s AND category_id = %s AND keyword = %s
+                """,
+                (user_id, category_id, keyword)
             )
-        )
+        else:
+            cursor.execute(
+                """
+                SELECT setting_id FROM user_notification_setting
+                WHERE user_id = %s AND category_id = %s AND keyword IS NULL
+                """,
+                (user_id, category_id)
+            )
+
+        result = cursor.fetchone()
+
+        if result:
+            cursor.execute(
+                """
+                UPDATE user_notification_setting
+                SET is_enabled = %s
+                WHERE setting_id = %s
+                """,
+                (notification_toggle, result["setting_id"])
+            )
+        else:
+            cursor.execute(
+                """
+                INSERT INTO user_notification_setting (user_id, category_id, keyword, is_enabled)
+                VALUES (%s, %s, %s, %s)
+                """,
+                (user_id, category_id, keyword, notification_toggle)
+            )
+
         conn.commit()
         cursor.close()
         conn.close()
-        return {
-            "Notification Setting Stored Successfully"
-        }
+        return {"message": "Notification setting updated successfully"}
 
     def get_notification_settings(self, user):
         conn = DbConnection.get_db_connection()

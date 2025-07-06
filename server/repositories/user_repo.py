@@ -3,7 +3,7 @@ from server.schemas.user import UserCreate
 from server.utils.password_utils import hash_password
 
 class UserRepository:
-    def get_by_email(self, email: str):
+    def get_by_email(self, email):
         conn = DbConnection.get_db_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("SELECT * FROM users WHERE email = %s", (email,))

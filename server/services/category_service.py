@@ -1,10 +1,10 @@
 from server.repositories.category_repo import CategoryRepository
 from typing import List
-from server.schemas.news import NewsArticleCreate
 from server.schemas.category import CategoryCreate
-from loguru import logger
+from server.services.interfaces.category_interface import ICategoryService
 
-class CategoryService:
+
+class CategoryService(ICategoryService):
     def __init__(self):
         self.repo = CategoryRepository()
 
@@ -42,20 +42,6 @@ class CategoryService:
         if not existing:
             raise ValueError(f"Category with ID {category_id} not found")
         return self.repo.delete(category_id)
-
-    # def classify_article(self,article:NewsArticleCreate,article_id):
-    #     title = article.title
-    #     description = article.description
-    #     content = article.content
-    #
-    #     category_name = self.classifier.classify(title, description, content)
-    #
-    #     category = self.category_repo.get_by_name(category_name)
-    #     category_id = category["category_id"] if category else None
-    #
-    #     if article_id and category_id:
-    #         self.category_repo.insert_article_category(category_id,article_id)
-    #         logger.info(f"Mapped Article {article_id} to Category '{category_name}'")
 
     def hide_category(self, category_id):
         return self.repo.hide_category(category_id)

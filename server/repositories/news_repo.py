@@ -77,8 +77,18 @@ class NewsRepository:
     def get_news_by_date_range(self, start_date, end_date, category_id):
         conn = DbConnection.get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute(
-            f"""
+        if category_id is None:
+            query = f"""
+            select a.article_id, title, description, content, source, url, published_at, c.category_name
+            FROM articles a
+            JOIN article_category_mapping acm ON a.article_id = acm.article_id
+            JOIN category c ON acm.category_id = c.category_id  
+            where date(published_at)>="{start_date}" and date(published_at)<="{end_date}"
+            AND c.is_visible = TRUE
+            AND a.is_visible = TRUE;
+            """
+        else:
+            query = f"""
             select a.article_id, title, description, content, source, url, published_at, c.category_name
             FROM articles a
             JOIN article_category_mapping acm ON a.article_id = acm.article_id
@@ -88,7 +98,7 @@ class NewsRepository:
             AND c.is_visible = TRUE
             AND a.is_visible = TRUE;
             """
-        )
+        cursor.execute(query)
         rows = cursor.fetchall()
         cursor.close()
         conn.close()
@@ -102,11 +112,6 @@ class NewsRepository:
         keyword = f"%{search_request.keyword}%"
         start_date = search_request.start_date
         end_date = search_request.end_date
-        sort_by = search_request.sort_by.lower()
-
-        # Validate sort_by manually
-        if sort_by not in {"likes", "dislikes"}:
-            sort_by = "likes"  # default fallback
 
         query = f"""
             SELECT a.article_id, title, description, content, source, url, published_at, c.category_name
@@ -118,7 +123,7 @@ class NewsRepository:
               AND c.is_visible = TRUE
               AND a.is_visible = TRUE
               AND CONCAT_WS(' ', title, description, content) LIKE %s
-            ORDER BY a.{sort_by} DESC;
+            ORDER BY a.likes DESC, a.dislikes ASC;
         """
 
         cursor.execute(query, (start_date, end_date, keyword))

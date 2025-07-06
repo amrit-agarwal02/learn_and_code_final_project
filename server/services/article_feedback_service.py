@@ -1,6 +1,8 @@
 from server.repositories.article_feedback_repo import ArticleFeedbackRepository
+from server.services.interfaces.article_feedback_interface import IArticleFeedbackService
 
-class ArticleFeedbackService:
+
+class ArticleFeedbackService(IArticleFeedbackService):
     def __init__(self):
         self.feedback_repo = ArticleFeedbackRepository()
 

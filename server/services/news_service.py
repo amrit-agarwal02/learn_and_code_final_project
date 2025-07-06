@@ -157,8 +157,11 @@ class NewsService:
         return self.personalize_articles(user_id, today_articles)
 
     def get_news_by_date_range(self,user_id, start_date, end_date, category_name):
-        category_id_response = self.category_repo.get_id_by_name(category_name)
-        category_id = int(category_id_response.get('category_id'))
+        if category_name.lower() != "all":
+            category_id_response = self.category_repo.get_id_by_name(category_name)
+            category_id = int(category_id_response.get('category_id'))
+        else:
+            category_id = None
         news_articles = self.news_repo.get_news_by_date_range(start_date,end_date,category_id)
         news_articles = self.filter_blocked_articles(news_articles)
         return self.personalize_articles(user_id, news_articles)

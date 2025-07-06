@@ -1,6 +1,8 @@
 from server.repositories.external_server_repo import ExternalServerRepository
+from server.services.interfaces.external_server_interface import IExternalServerService
 
-class ExternalServerService:
+
+class ExternalServerService(IExternalServerService):
     def __init__(self):
         self.server_repo = ExternalServerRepository()
 

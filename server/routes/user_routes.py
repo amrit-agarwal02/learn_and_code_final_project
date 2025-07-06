@@ -12,10 +12,8 @@ controller = NotificationController()
 news_controller = NewsController()
 
 @router.post("/notification/setting")
-def set_notification_config(data: NotificationRequest, user = Depends(get_current_user)):
-    category = data.category
-    keyword = data.keyword
-    return controller.save_user_notification_setting(user["user_id"],category,keyword)
+def set_notification_config(notification_setting_data: NotificationRequest, user = Depends(get_current_user)):
+    return controller.save_user_notification_setting(user["user_id"],notification_setting_data)
 
 @router.get("/notification/settings")
 def get_notification_config(user = Depends(get_current_user)):

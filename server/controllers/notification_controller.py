@@ -1,4 +1,6 @@
 from fastapi import HTTPException
+
+from server.schemas.notification import NotificationRequest
 from server.services.notification_service import NotificationService
 from server.config.http_status_code import HTTP_INTERNAL_SERVER_ERROR
 
@@ -12,9 +14,9 @@ class NotificationController:
         except Exception as e:
             raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
 
-    def save_user_notification_setting(self, user_id, category, keyword):
+    def save_user_notification_setting(self, user_id, notification_setting_data: NotificationRequest):
         try:
-            return self.notification_service.save_user_notification_setting(user_id, category, keyword)
+            return self.notification_service.save_user_notification_setting(user_id, notification_setting_data)
         except Exception as e:
             raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
 
