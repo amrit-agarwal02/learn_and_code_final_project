@@ -29,7 +29,7 @@ class NewsRepository:
 
     def get_recent_news(self, count_of_recent_news: int):
         conn = DbConnection.get_db_connection()
-        cursor = conn.cursor(dictionary=True)  # Return results as dicts
+        cursor = conn.cursor(dictionary=True)
         cursor.execute(
             """
             SELECT article_id, server_id, title, description, content, source, url, published_at

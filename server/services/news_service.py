@@ -163,7 +163,7 @@ class NewsService(INewsService):
         for article in articles:
             score = 0
             category = article.get('category_name')
-            score += category_counts.get(category, 0) * 3  # weight as you like
+            score += category_counts.get(category, 0) * 3
             personalized.append((score, article))
         personalized.sort(reverse=True, key=lambda x: x[0])
         return [a for score, a in personalized[:20]]

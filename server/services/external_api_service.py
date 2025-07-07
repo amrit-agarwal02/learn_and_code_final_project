@@ -42,7 +42,6 @@ class NewsAPIService(ExternalAPIService):
     def fetch_news_from_API(self):
         pass
 
-    # def parse_news(self, ):
 
 class TheNewsAPIService(ExternalAPIService):
 

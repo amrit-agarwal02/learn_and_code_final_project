@@ -14,27 +14,6 @@ class NotificationRepository:
         self.news_repo = NewsRepository()
         self.category_repo = CategoryRepository()
 
-    # def save(self, user_id: int, category_id: int, keyword):
-    #     conn = DbConnection.get_db_connection()
-    #     cursor = conn.cursor(dictionary=True)
-    #     cursor.execute(
-    #         """
-    #         INSERT INTO user_notification_setting (user_id, category_id, keyword)
-    #         VALUES (%s, %s, %s)
-    #         """,
-    #         (
-    #             user_id,
-    #             category_id,
-    #             keyword
-    #         )
-    #     )
-    #     conn.commit()
-    #     cursor.close()
-    #     conn.close()
-    #     return {
-    #         "Notification Setting Stored Successfully"
-    #     }
-
     def save(self, user_id: int, category_id: int, notification_setting_data: NotificationRequest):
         keyword = notification_setting_data.keyword
         notification_toggle = notification_setting_data.is_enabled
