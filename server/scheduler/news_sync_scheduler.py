@@ -1,6 +1,6 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from server.controllers.news_controller import NewsController
-from loguru import logger
+from server.utils.logger import logger
 
 def sync_news_job():
     logger.info("Scheduled news sync started...")

@@ -9,7 +9,7 @@ from server.config.constants import API_URL
 from server.services.category_classifier import CategoryClassifier
 from server.services.category_service import CategoryService
 from server.services.notification_service import NotificationService
-from loguru import logger
+from server.utils.logger import logger
 
 
 class NewsService:

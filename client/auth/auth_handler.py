@@ -24,7 +24,7 @@ class AuthHandler:
         if not validate_email(email):
             print("Invalid email format.")
             return
-        password = input("Password: ")
+        password = getpass("Password: ")
         response = self.api.register(username, email, password)
         if response.ok:
             print("Registration successful! Please log in.")

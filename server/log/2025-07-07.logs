@@ -1,0 +1,22 @@
+2025-07-07 08:56:52 | app | INFO | Starting sync from external API...
+2025-07-07 08:56:52 | app | INFO | Fetching news from https://newsapi.org/v2/top-headlines?country=us&apiKey=
+2025-07-07 08:56:53 | app | INFO | Mapped Article 1067 to Category 'General'
+2025-07-07 08:56:54 | app | INFO | Mapped Article 1068 to Category 'Business'
+2025-07-07 08:56:54 | app | INFO | Mapped Article 1069 to Category 'General'
+2025-07-07 08:56:55 | app | INFO | Mapped Article 1070 to Category 'General'
+2025-07-07 08:56:55 | app | INFO | Mapped Article 1071 to Category 'General'
+2025-07-07 08:56:55 | app | INFO | Mapped Article 1072 to Category 'General'
+2025-07-07 08:56:56 | app | INFO | Mapped Article 1073 to Category 'General'
+2025-07-07 08:56:56 | app | INFO | Mapped Article 1074 to Category 'Entertainment'
+2025-07-07 08:56:56 | app | INFO | Mapped Article 1075 to Category 'General'
+2025-07-07 08:56:57 | app | INFO | Mapped Article 1076 to Category 'General'
+2025-07-07 08:56:57 | app | INFO | Mapped Article 1077 to Category 'Entertainment'
+2025-07-07 08:56:57 | app | INFO | Mapped Article 1078 to Category 'Sports'
+2025-07-07 08:56:58 | app | INFO | Mapped Article 1079 to Category 'General'
+2025-07-07 08:56:58 | app | INFO | Mapped Article 1080 to Category 'General'
+2025-07-07 08:56:59 | app | INFO | Mapped Article 1081 to Category 'General'
+2025-07-07 08:56:59 | app | INFO | Mapped Article 1082 to Category 'General'
+2025-07-07 08:56:59 | app | INFO | Mapped Article 1083 to Category 'General'
+2025-07-07 08:57:00 | app | INFO | Mapped Article 1084 to Category 'General'
+2025-07-07 08:57:00 | app | INFO | Mapped Article 1085 to Category 'General'
+2025-07-07 08:57:00 | app | INFO | Notifications Stored result: {'inserted_notifications': 18}
