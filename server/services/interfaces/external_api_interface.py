@@ -15,4 +15,8 @@ class IExternalAPIService(ABC):
     
     @abstractmethod
     def get_api_name(self) -> str:
-        pass 
+        pass
+
+    @abstractmethod
+    def orchestrate_store_articles(self, articles_data, server_id):
+        pass

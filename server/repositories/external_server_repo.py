@@ -60,6 +60,19 @@ class ExternalServerRepository:
         cursor.close()
         conn.close()
 
+    def update_api_status(self, server_id: int, status):
+        conn = DbConnection.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "UPDATE external_server SET is_active = %s WHERE server_id = %s",
+            (status,server_id)
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+
+
     def get_server_details(self):
         conn = DbConnection.get_db_connection()
         cursor = conn.cursor(dictionary=True)

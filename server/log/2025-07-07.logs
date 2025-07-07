@@ -20,3 +20,35 @@
 2025-07-07 08:57:00 | app | INFO | Mapped Article 1084 to Category 'General'
 2025-07-07 08:57:00 | app | INFO | Mapped Article 1085 to Category 'General'
 2025-07-07 08:57:00 | app | INFO | Notifications Stored result: {'inserted_notifications': 18}
+2025-07-07 12:39:43 | app | INFO | Starting sync from external API
+2025-07-07 12:39:43 | app | INFO | Testing API: NewsAPI
+2025-07-07 12:39:43 | app | ERROR | Error testing API NewsAPI: 'Logger' object has no attribute 'success'
+2025-07-07 12:39:43 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 12:39:43 | app | INFO | Testing API: TheNewsAPI
+2025-07-07 12:39:49 | app | ERROR | Error testing API TheNewsAPI: 'Logger' object has no attribute 'success'
+2025-07-07 12:39:49 | app | WARNING | API TheNewsAPI failed - marking as inactive
+2025-07-07 12:39:49 | app | ERROR | All APIs failed
+2025-07-07 12:40:36 | app | INFO | Starting sync from external API
+2025-07-07 12:40:37 | app | INFO | Testing API: NewsAPI
+2025-07-07 12:40:37 | app | ERROR | Error testing API NewsAPI: 'Logger' object has no attribute 'success'
+2025-07-07 12:40:37 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 12:40:37 | app | INFO | Testing API: TheNewsAPI
+2025-07-07 12:40:41 | app | ERROR | Error testing API TheNewsAPI: 'Logger' object has no attribute 'success'
+2025-07-07 12:40:41 | app | WARNING | API TheNewsAPI failed - marking as inactive
+2025-07-07 12:40:41 | app | ERROR | All APIs failed
+2025-07-07 12:41:46 | app | INFO | Starting sync from external API
+2025-07-07 12:41:46 | app | INFO | Testing API: NewsAPI
+2025-07-07 12:41:47 | app | ERROR | Error testing API NewsAPI: 'Logger' object has no attribute 'success'
+2025-07-07 12:43:12 | app | INFO | Starting sync from external API
+2025-07-07 12:43:12 | app | INFO | Testing API: NewsAPI
+2025-07-07 12:43:13 | app | ERROR | Error testing API NewsAPI: 'Logger' object has no attribute 'success'
+2025-07-07 12:43:13 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 12:43:13 | app | INFO | Testing API: TheNewsAPI
+2025-07-07 12:43:18 | app | ERROR | Error testing API TheNewsAPI: 'Logger' object has no attribute 'success'
+2025-07-07 12:43:18 | app | WARNING | API TheNewsAPI failed - marking as inactive
+2025-07-07 12:43:18 | app | ERROR | All APIs failed
+2025-07-07 12:47:43 | app | INFO | Starting sync from external API
+2025-07-07 12:47:44 | app | INFO | Testing API: NewsAPI
+2025-07-07 12:47:45 | app | INFO | API NewsAPI is working
+2025-07-07 12:47:45 | app | INFO | Processing news from NewsAPI
+2025-07-07 12:47:50 | app | INFO | Notifications Stored result: {'inserted_notifications': 17}

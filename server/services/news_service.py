@@ -10,9 +10,12 @@ from server.services.category_classifier import CategoryClassifier
 from server.services.category_service import CategoryService
 from server.services.notification_service import NotificationService
 from server.utils.logger import logger
+from server.services.interfaces.news_interface import INewsService
+from server.services.external_api_factory import ExternalAPIFactory
+from typing import Dict, List, Any, Optional
+from server.services.interfaces.external_api_interface import IExternalAPIService
 
-
-class NewsService:
+class NewsService(INewsService):
     def __init__(self):
         self.news_repo = NewsRepository()
         self.external_api_repo = ExternalServerRepository()
@@ -22,134 +25,88 @@ class NewsService:
         self.blocked_keywords_service = BlockedKeywordsService()
         self.personalization_repo = PersonalizationRepo()
 
-    def get_active_api(self):
-        apis = self.external_api_repo.get_api_status()
-        return next((api for api in apis if api["is_active"]==1), None)
+    def get_all_apis(self):
+        return self.external_api_repo.fetch_all_external_servers()
 
-    def classify_article(self,article:NewsArticleCreate,article_id):
-        title = article.title
-        description = article.description
-        content = article.content
+    def get_news_from_first_available_api(self, apis):
+        if not apis:
+            logger.error("No external APIs configured")
+            return None, None, None
+        for api in apis:
+            result = self._attempt_fetch_from_api(api)
+            if result:
+                return result
+        logger.error("All APIs failed")
+        return None, None, None
 
-        category_name = self.classifier.classify(title, description, content)
+    def _attempt_fetch_from_api(self, api):
+        server_id = api["server_id"]
+        server_name = api["server_name"]
+        api_url = API_URL.get(server_name)
+        if not api_url:
+            logger.warning(f"No URL configured for API: {server_name}")
+            return None
+        api_config = self._create_api_config(api, api_url)
+        logger.info(f"Attempting API: {server_name}")
 
-        category = self.category_repo.get_by_name(category_name)
-        category_id = category["category_id"] if category else None
-
-        if article_id and category_id:
-            self.category_repo.insert_article_category(category_id,article_id)
-            logger.info(f"Mapped Article {article_id} to Category '{category_name}'")
-
-    def fetch_news(self, url, active_server_id):
         try:
-            response = requests.get(url)
-            if response.status_code == 200:
-                self.external_api_repo.update_last_accessed(active_server_id)
-                return response.json()
-        except requests.RequestException as e:
-            print(f"Error fetching news: {e}")
-        return None
+            external_api_service = self._create_api_service(server_name, api_config)
+            fetched_data = self._fetch_api_data(external_api_service, api_config)
+            if fetched_data:
+                self._handle_successful_api(server_id, server_name)
+                return api, fetched_data, external_api_service
+            else:
+                self._handle_failed_api(server_id, server_name)
+                return None
+        except Exception as e:
+            logger.error(f"Error testing API {server_name}: {e}")
+            self._handle_failed_api(server_id, server_name)
+            return None
 
-    def parse_articles_newsapi(self, data, server_id):
-        articles = data.get("articles", [])
-        parsed_articles = []
-        for article in articles:
-            source = article.get("source", {}).get("name")
-            news = NewsArticleCreate(
-                title=article.get("title"),
-                server_id= server_id,
-                description=article.get("description"),
-                content=article.get("content"),
-                source=source,
-                url=article.get("url"),
-                published_at=article.get("publishedAt")
-            )
-            parsed_articles.append(news)
-        return parsed_articles
-
-    def store_articles_thenewsapi(self, data, server_id):
-        articles = data.get("data", [])
-        parsed_articles = []
-        for article in articles:
-            source = article.get("source")
-            title = article.get("title")
-            server_id = server_id
-            description = article.get("description")
-            content = article.get("content")
-            source = source
-            url = article.get("url")
-            published_at = article.get("published_at")
-            categories = article.get("categories",[])
-
-
-            news = NewsArticleCreate(
-                title=article.get("title"),
-                server_id=server_id,
-                description=article.get("description"),
-                content=article.get("content"),
-                source=source,
-                url=article.get("url"),
-                published_at=article.get("published_at")
-            )
-            parsed_articles.append(news)
-            article_id = self.news_repo.save(news)
-            for category_name in categories:
-                if category_name:
-                    category = self.category_repo.get_by_name(category_name)
-                    if category:
-                        category_id = category.get('category_id')
-                        self.category_repo.insert_article_category(category_id, article_id)
-                    else:
-                        category_name= CategoryClassifier.DEFAULT_CATEGORY
-                        category_id = self.category_repo.get_id_by_name(category_name).get('category_id')
-                        self.category_repo.insert_article_category(category_id, article_id)
-
-        return parsed_articles
-
-    def store_articles(self, articles, active_api):
-        for article in articles:
-            article_id = self.news_repo.save(article)
-            self.classify_article(article, article_id)
-
-        return{
-            "message": f"{len(articles)} articles stored from {active_api['server_name']}",
-            "source": active_api["server_name"]
+    def _create_api_config(self, api: Dict[str, Any], api_url: str) -> Dict[str, Any]:
+        return {
+            "url": api_url,
+            "api_key": api["api_key"],
+            "server_id": api["server_id"],
+            "server_name": api["server_name"]
         }
 
+    def _create_api_service(self, server_name: str, api_config):
+        return ExternalAPIFactory.create_api_service(server_name, api_config)
+
+    def _fetch_api_data(self, api_service: IExternalAPIService, api_config: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        return api_service.fetch_news(api_config)
+
+    def _handle_successful_api(self, server_id: int, server_name: str) -> None:
+        logger.info(f"API {server_name} is working")
+        self.external_api_repo.update_api_status(server_id, True)
+        self.external_api_repo.update_last_accessed(server_id)
+
+    def _handle_failed_api(self, server_id: int, server_name: str) -> None:
+        logger.warning(f"API {server_name} failed - marking as inactive")
+        self.external_api_repo.update_api_status(server_id, False)
+
     def sync_news_from_api(self):
-        logger.info("Starting sync from external API...")
-        active_api = self.get_active_api()
+        logger.info("Starting sync from external API")
+        working_api, fetched_data, external_api_service = self.get_news_from_first_available_api(self.get_all_apis())
 
-        if not active_api:
-            return {"error": "No active external APIs available"}
+        if not working_api or not fetched_data or not external_api_service:
+            return {"error": "All external APIs are unavailable"}
 
-        active_api_server_name = active_api["server_name"]
-        active_api_url = API_URL.get(active_api_server_name)
-        active_api_server_id = active_api["server_id"]
+        working_api_server_id = working_api["server_id"]
+        working_api_server_name = working_api["server_name"]
 
-        logger.info(f"Fetching news from {active_api_url}")
+        logger.info(f"Processing news from {working_api_server_name}")
 
-        data = self.fetch_news(active_api_url+active_api["api_key"], active_api_server_id)
-
-        if not data:
-            return {"error": f"Failed to fetch news from {active_api['name']}"}
-
-        if "thenewsapi" in active_api_url.lower():
-            articles = self.store_articles_thenewsapi(data, active_api_server_id)
-            logger.info(f"Fetched and stored {len(articles)} articles from {active_api['server_name']}")
-            logger.success("News sync completed.")
-            return {
-                "message": f"{len(articles)} articles stored from {active_api['server_name']}",
-                "source": active_api["server_name"]
-            }
-        else:
-            articles = self.parse_articles_newsapi(data, active_api_server_id)
-            result = self.store_articles(articles, active_api)
+        try:
+            external_api_service.orchestrate_store_articles(fetched_data, working_api_server_id)
             notifications_stored = self.notification_service.store_notifications()
-            print("Notifications Stored :", notifications_stored)
             logger.info(f"Notifications Stored result: {notifications_stored}")
             self.notification_service.send_unread_notifications()
-            return result
+
+        except Exception as e:
+            logger.error(f"Error during news sync: {e}")
+            return {"error": f"Failed to sync news: {str(e)}"}
 
     def today_news(self, user_id:int):
         today_articles = self.news_repo.get_today_news()
