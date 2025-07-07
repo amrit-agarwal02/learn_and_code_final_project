@@ -11,12 +11,13 @@ class ExternalAPIFactory:
     def create_api_service(server_name: str, api_config: Dict[str, Any]) -> IExternalAPIService:
         server_name_lower = server_name.lower()
 
-        if "newsapi" in server_name_lower:
+        if "thenewsapi" in server_name_lower:
             logger.info(f"Creating NewsAPI service for {server_name}")
-            return NewsAPIService(api_config)
-        elif "thenewsapi" in server_name_lower:
-            logger.info(f"Creating TheNewsAPI service for {server_name}")
             return TheNewsAPIService(api_config)
+
+        elif "newsapi" in server_name_lower:
+            logger.info(f"Creating TheNewsAPI service for {server_name}")
+            return NewsAPIService(api_config)
         else:
             raise ExternalServerNotFoundException(f"Unsupported external API server: {server_name}")
 

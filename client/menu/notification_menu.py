@@ -7,7 +7,7 @@ class NotificationMenu(BaseMenu):
         self.api_client = api_client
 
     def show(self):
-        print("\nN O T I F I C A T I O N S")
+        print("\nNOTIFICATIONS")
         print("1. View Notifications")
         print("2. Configure Notifications")
         print("3. Back")
@@ -59,8 +59,7 @@ class NotificationMenu(BaseMenu):
                 return
 
             self.display_categories_with_status(categories, current_settings)
-
-            print(f"\n{len(categories) + 1}. Keywords")
+            print(f"{len(categories) + 1}. Keywords")
             print(f"{len(categories) + 2}. Back")
             print(f"{len(categories) + 3}. Logout")
 
@@ -87,7 +86,6 @@ class NotificationMenu(BaseMenu):
 
     def display_categories_with_status(self, categories, current_settings):
         print("\nAvailable Categories:")
-        print("-" * 40)
 
         for idx, category in enumerate(categories, 1):
             category_name = category['category_name']

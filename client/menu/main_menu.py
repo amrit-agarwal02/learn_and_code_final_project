@@ -25,7 +25,7 @@ class MainMenu(BaseMenu):
                 print("Exiting application")
                 break
             else:
-                print("Invalid choice.")
+                print("Try Again.")
 
     def _show_role_related_menu(self):
         if self.api.user_role == "admin":

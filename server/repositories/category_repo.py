@@ -1,8 +1,13 @@
 import json
 from server.config.database import DbConnection
 from typing import List, Optional
+from pathlib import Path
 
 class CategoryRepository:
+
+    def __init__(self):
+        self.file_path = Path(__file__).parent.parent / "config" / "category_keywords.json"
+
     def get_all(self) -> List[dict]:
         conn = DbConnection.get_db_connection()
         cursor = conn.cursor(dictionary=True)
@@ -96,11 +101,13 @@ class CategoryRepository:
         return True
 
     def save_keywords(self):
-        with open(r"/server\config\category_keywords.json", "w") as file:
+        with self.file_path.open("w", encoding="utf-8") as file:
             json.dump(self.categories, file, indent=2)
 
     def load_keywords(self):
-        with open(r"/server\config\category_keywords.json", "r") as file:
+        if not self.file_path.exists():
+            return {}
+        with self.file_path.open("r", encoding="utf-8") as file:
             return json.load(file)
 
     def insert_article_category(self, category_id, article_id):

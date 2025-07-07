@@ -2,7 +2,7 @@ from server.repositories.news_repo import NewsRepository
 from server.config.constants import REPORT_THRESHOLD
 from server.services.email_service import EmailService
 from server.services.interfaces.report_interface import IReportService
-
+from server.config.constants import ADMIN_EMAIL
 
 class ReportService(IReportService):
     def __init__(self):
@@ -17,8 +17,9 @@ class ReportService(IReportService):
             self.news_repo.hide_article(article_id)
         if report_count<REPORT_THRESHOLD:
             self.email_service.send_notification_email(
-                to_email="02amritagarwal@gmail.com",
-                message=f"Article ID {article_id} was reported by User ID {user_id}.\nReason: {reason or 'No reason provided'}.\nTotal reports: {report_count}"
+                to_email=ADMIN_EMAIL,
+                message=f"Article ID {article_id} was reported by User ID {user_id}."
+                        f"\nReason: {reason or 'No reason provided'}.\nTotal reports: {report_count}"
             )
         return {"message": "Report submitted successfully."}
 

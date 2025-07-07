@@ -15,7 +15,7 @@ class AuthHandler:
         if response.ok:
             print("Login successful!")
             return True
-        print(f"Login failed: {response.json().get('detail', response.text)}")
+        print(f"Login failed: Try again with correct Email and password")
         return False
 
     def signup(self):
@@ -30,4 +30,4 @@ class AuthHandler:
         if response.ok:
             print("Registration successful! Please log in.")
         else:
-            print(f"Registration failed: {response.json().get('detail', response.text)}")
+            print(f"Registration failed: Try again")

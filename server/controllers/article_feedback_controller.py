@@ -1,6 +1,5 @@
-from fastapi import HTTPException
 from server.services.article_feedback_service import ArticleFeedbackService
-from server.config.http_status_code import HTTP_INTERNAL_SERVER_ERROR
+
 
 class ArticleFeedbackController:
     def __init__(self):

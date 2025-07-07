@@ -1,7 +1,5 @@
-from fastapi import HTTPException
 from server.services.category_service import CategoryService
 from server.schemas.category import CategoryCreate, CategoryUpdate
-from server.config.http_status_code import HTTP_INTERNAL_SERVER_ERROR, HTTP_NOT_FOUND
 from typing import List
 
 class CategoryController:

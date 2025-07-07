@@ -29,3 +29,4 @@ EMAIL_SENDER = "amrit02agarwal@gmail.com"
 EMAIL_PASSWORD = "cnpw iaiy hued pecc"
 
 REPORT_THRESHOLD = 3
+ADMIN_EMAIL = "02amritagarwal@gmail.com"

@@ -1,8 +1,4 @@
-from fastapi import FastAPI, HTTPException
-from server.Models.user import User
 from server.services.auth_service import AuthService
-from server.Exceptions.exceptions import UserAlreadyExistsException, UserNotFoundException
-from server.config.http_status_code import HTTP_BAD_REQUEST, HTTP_NOT_FOUND
 from server.schemas.auth import UserCredentials
 from server.schemas.user import UserCreate
 
@@ -11,7 +7,7 @@ class AuthController:
     def __init__(self):
         self.auth_service = AuthService()
 
-    def login(self, user_data: UserCredentials) -> User:
+    def login(self, user_data: UserCredentials):
         return self.auth_service.login(user_data)
 
     def register(self, user: UserCreate):

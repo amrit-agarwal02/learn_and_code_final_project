@@ -1,6 +1,4 @@
-from fastapi import HTTPException
 from server.services.external_server_service import ExternalServerService
-from server.config.http_status_code import HTTP_INTERNAL_SERVER_ERROR
 
 class ExternalServerController:
     def __init__(self):

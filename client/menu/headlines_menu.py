@@ -16,20 +16,24 @@ class HeadlinesMenu(BaseMenu):
         print("4. Logout")
 
     def handle_input(self):
-        while True:
-            self.show()
-            choice = input("Enter your choice: ").strip()
-            if choice == "1":
-                self.show_today_headlines()
-            elif choice == "2":
-                self.show_date_range_headlines()
-            elif choice == "3":
-                break
-            elif choice == "4":
-                print("Logging out...")
-                exit(0)
-            else:
-                print("Invalid choice. Please try again.")
+        try:
+            while True:
+                self.show()
+                choice = input("Enter your choice: ").strip()
+                if choice == "1":
+                    self.show_today_headlines()
+                elif choice == "2":
+                    self.show_date_range_headlines()
+                elif choice == "3":
+                    break
+                elif choice == "4":
+                    print("Logging out...")
+                    exit(0)
+                else:
+                    print("Invalid choice. Please try again.")
+
+        except Exception as e:
+            print("Error Occurred due to in appropriate input")
 
     def show_today_headlines(self):
         response = self.api_client.get_today_articles()
@@ -135,7 +139,6 @@ class HeadlinesMenu(BaseMenu):
                 return
             elif action == "4":
                 print("Logging out...")
-                # self.auth_handler.logout()
                 exit(0)
             else:
                 print("Invalid choice. Please try again.")
@@ -151,7 +154,6 @@ class HeadlinesMenu(BaseMenu):
             print("Article not found.")
             return
 
-        # Display full article
         print(f"\nArticle Id: {article.get('article_id')}")
         print(f"\nTitle: {article.get('title')}")
         print(f"\nDescription: {article.get('description', '')}")
@@ -194,7 +196,8 @@ class HeadlinesMenu(BaseMenu):
         else:
             print("Article disliked successfully!")
 
-    def report_article(self, article_id, reason):
+    def report_article(self, article_id):
+        reason = input("Enter Reason : ")
         response = self.api_client.report_article(article_id, reason)
         if "error" in response:
             print(f"Error: {response['error']}")

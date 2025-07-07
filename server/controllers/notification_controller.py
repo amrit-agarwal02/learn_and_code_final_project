@@ -1,8 +1,5 @@
-from fastapi import HTTPException
-
 from server.schemas.notification import NotificationRequest
 from server.services.notification_service import NotificationService
-from server.config.http_status_code import HTTP_INTERNAL_SERVER_ERROR
 
 class NotificationController:
     def __init__(self):

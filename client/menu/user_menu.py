@@ -33,15 +33,7 @@ class UserMenu(BaseMenu):
                 print("Logging out...")
                 break
             else:
-                print("Invalid choice.")
-
-    def _view_articles(self):
-        response = self.api_client.get_articles()
-        if response.ok:
-            for article in response.json():
-                print(f"{article['article_id']}: {article['title']}")
-        else:
-            print("Failed to fetch art.")
+                print("Invalid Choice Try Again")
 
 
     def _view_categories(self):

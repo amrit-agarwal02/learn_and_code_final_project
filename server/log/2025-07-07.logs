@@ -62,3 +62,114 @@
 2025-07-07 13:59:06 | app | INFO | API NewsAPI is working
 2025-07-07 13:59:06 | app | INFO | Processing news from NewsAPI
 2025-07-07 13:59:09 | app | INFO | Notifications Stored result: {'inserted_notifications': 17}
+2025-07-07 19:42:53 | app | INFO | Starting sync from external API
+2025-07-07 19:42:53 | app | INFO | Attempting API: NewsAPI
+2025-07-07 19:42:53 | app | INFO | Creating NewsAPI service for NewsAPI
+2025-07-07 19:42:54 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 19:42:54 | app | INFO | Attempting API: TheNewsAPI
+2025-07-07 19:42:54 | app | INFO | Creating NewsAPI service for TheNewsAPI
+2025-07-07 19:42:59 | app | INFO | API TheNewsAPI is working
+2025-07-07 19:42:59 | app | INFO | Processing news from TheNewsAPI
+2025-07-07 19:42:59 | app | INFO | Notifications Stored result: {'inserted_notifications': 0}
+2025-07-07 19:43:27 | app | INFO | Starting sync from external API
+2025-07-07 19:43:27 | app | INFO | Attempting API: NewsAPI
+2025-07-07 19:43:27 | app | INFO | Creating NewsAPI service for NewsAPI
+2025-07-07 19:43:28 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 19:43:28 | app | INFO | Attempting API: TheNewsAPI
+2025-07-07 19:43:28 | app | INFO | Creating NewsAPI service for TheNewsAPI
+2025-07-07 19:43:32 | app | INFO | API TheNewsAPI is working
+2025-07-07 19:43:32 | app | INFO | Processing news from TheNewsAPI
+2025-07-07 19:43:32 | app | INFO | Notifications Stored result: {'inserted_notifications': 0}
+2025-07-07 19:46:35 | app | INFO | Starting sync from external API
+2025-07-07 19:46:35 | app | INFO | Attempting API: NewsAPI
+2025-07-07 19:46:35 | app | INFO | Creating NewsAPI service for NewsAPI
+2025-07-07 19:46:37 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 19:46:37 | app | INFO | Attempting API: TheNewsAPI
+2025-07-07 19:46:37 | app | INFO | Creating NewsAPI service for TheNewsAPI
+2025-07-07 19:46:41 | app | INFO | API TheNewsAPI is working
+2025-07-07 19:46:41 | app | INFO | Processing news from TheNewsAPI
+2025-07-07 19:46:41 | app | INFO | Notifications Stored result: {'inserted_notifications': 0}
+2025-07-07 19:47:50 | app | INFO | Starting sync from external API
+2025-07-07 19:47:50 | app | INFO | Attempting API: NewsAPI
+2025-07-07 19:47:50 | app | INFO | Creating NewsAPI service for NewsAPI
+2025-07-07 19:47:51 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 19:47:51 | app | INFO | Attempting API: TheNewsAPI
+2025-07-07 19:47:51 | app | INFO | Creating NewsAPI service for TheNewsAPI
+2025-07-07 19:47:56 | app | INFO | API TheNewsAPI is working
+2025-07-07 19:47:56 | app | INFO | Processing news from TheNewsAPI
+2025-07-07 19:47:57 | app | INFO | Notifications Stored result: {'inserted_notifications': 0}
+2025-07-07 19:49:09 | app | INFO | Starting sync from external API
+2025-07-07 19:49:09 | app | INFO | Attempting API: NewsAPI
+2025-07-07 19:49:09 | app | INFO | Creating NewsAPI service for NewsAPI
+2025-07-07 19:49:09 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 19:49:10 | app | INFO | Attempting API: TheNewsAPI
+2025-07-07 19:49:10 | app | INFO | Creating NewsAPI service for TheNewsAPI
+2025-07-07 19:49:15 | app | INFO | API TheNewsAPI is working
+2025-07-07 19:49:15 | app | INFO | Processing news from TheNewsAPI
+2025-07-07 19:49:15 | app | INFO | Notifications Stored result: {'inserted_notifications': 0}
+2025-07-07 19:51:27 | app | INFO | Starting sync from external API
+2025-07-07 19:51:27 | app | INFO | Attempting API: NewsAPI
+2025-07-07 19:51:27 | app | INFO | Creating NewsAPI service for NewsAPI
+2025-07-07 19:51:27 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 19:51:27 | app | INFO | Attempting API: TheNewsAPI
+2025-07-07 19:51:27 | app | INFO | Creating NewsAPI service for TheNewsAPI
+2025-07-07 19:51:32 | app | INFO | API TheNewsAPI is working
+2025-07-07 19:51:33 | app | INFO | Processing news from TheNewsAPI
+2025-07-07 19:51:33 | app | INFO | Notifications Stored result: {'inserted_notifications': 0}
+2025-07-07 19:53:09 | app | INFO | Starting sync from external API
+2025-07-07 19:53:09 | app | INFO | Attempting API: NewsAPI
+2025-07-07 19:53:09 | app | INFO | Creating NewsAPI service for NewsAPI
+2025-07-07 19:53:09 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 19:53:09 | app | INFO | Attempting API: TheNewsAPI
+2025-07-07 19:53:09 | app | INFO | Creating NewsAPI service for TheNewsAPI
+2025-07-07 19:53:14 | app | INFO | API TheNewsAPI is working
+2025-07-07 19:53:14 | app | INFO | Processing news from TheNewsAPI
+2025-07-07 19:53:14 | app | INFO | Notifications Stored result: {'inserted_notifications': 0}
+2025-07-07 19:55:09 | app | INFO | Starting sync from external API
+2025-07-07 19:55:09 | app | INFO | Attempting API: NewsAPI
+2025-07-07 19:55:09 | app | INFO | Creating NewsAPI service for NewsAPI
+2025-07-07 19:55:10 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 19:55:11 | app | INFO | Attempting API: TheNewsAPI
+2025-07-07 19:55:11 | app | INFO | Creating NewsAPI service for TheNewsAPI
+2025-07-07 19:55:16 | app | INFO | API TheNewsAPI is working
+2025-07-07 19:55:16 | app | INFO | Processing news from TheNewsAPI
+2025-07-07 19:55:16 | app | INFO | Notifications Stored result: {'inserted_notifications': 0}
+2025-07-07 19:56:02 | app | INFO | Starting sync from external API
+2025-07-07 19:56:02 | app | INFO | Attempting API: NewsAPI
+2025-07-07 19:56:02 | app | INFO | Creating NewsAPI service for NewsAPI
+2025-07-07 19:56:03 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 19:56:03 | app | INFO | Attempting API: TheNewsAPI
+2025-07-07 19:56:03 | app | INFO | Creating NewsAPI service for TheNewsAPI
+2025-07-07 19:56:10 | app | INFO | API TheNewsAPI is working
+2025-07-07 19:56:11 | app | INFO | Processing news from TheNewsAPI
+2025-07-07 19:56:11 | app | INFO | Notifications Stored result: {'inserted_notifications': 0}
+2025-07-07 19:57:13 | app | INFO | Starting sync from external API
+2025-07-07 19:57:13 | app | INFO | Attempting API: NewsAPI
+2025-07-07 19:57:13 | app | INFO | Creating NewsAPI service for NewsAPI
+2025-07-07 19:57:14 | app | INFO | API NewsAPI is working
+2025-07-07 19:57:14 | app | INFO | Processing news from NewsAPI
+2025-07-07 19:57:17 | app | INFO | Notifications Stored result: {'inserted_notifications': 20}
+2025-07-07 20:07:38 | app | INFO | Starting sync from external API
+2025-07-07 20:07:38 | app | INFO | Attempting API: NewsAPI
+2025-07-07 20:07:38 | app | INFO | Creating TheNewsAPI service for NewsAPI
+2025-07-07 20:07:39 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 20:07:39 | app | INFO | Attempting API: TheNewsAPI
+2025-07-07 20:07:39 | app | INFO | Creating NewsAPI service for TheNewsAPI
+2025-07-07 20:07:44 | app | INFO | API TheNewsAPI is working
+2025-07-07 20:07:45 | app | INFO | Processing news from TheNewsAPI
+2025-07-07 20:07:46 | app | INFO | Notifications Stored result: {'inserted_notifications': 3}
+2025-07-07 21:27:35 | app | INFO | Starting sync from external API
+2025-07-07 21:27:35 | app | INFO | Attempting API: NewsAPI
+2025-07-07 21:27:35 | app | INFO | Creating TheNewsAPI service for NewsAPI
+2025-07-07 21:27:37 | app | WARNING | API NewsAPI failed - marking as inactive
+2025-07-07 21:27:37 | app | INFO | Attempting API: TheNewsAPI
+2025-07-07 21:27:37 | app | INFO | Creating NewsAPI service for TheNewsAPI
+2025-07-07 21:27:43 | app | INFO | API TheNewsAPI is working
+2025-07-07 21:27:43 | app | INFO | Processing news from TheNewsAPI
+2025-07-07 21:27:44 | app | INFO | Notifications Stored result: {'inserted_notifications': 3}
+2025-07-07 21:28:32 | app | INFO | Starting sync from external API
+2025-07-07 21:28:32 | app | INFO | Attempting API: NewsAPI
+2025-07-07 21:28:32 | app | INFO | Creating TheNewsAPI service for NewsAPI
+2025-07-07 21:28:36 | app | INFO | API NewsAPI is working
+2025-07-07 21:28:36 | app | INFO | Processing news from NewsAPI
+2025-07-07 21:28:41 | app | INFO | Notifications Stored result: {'inserted_notifications': 19}

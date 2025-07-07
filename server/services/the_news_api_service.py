@@ -50,7 +50,6 @@ class TheNewsAPIService(IExternalAPIService):
     def parse_articles(self, data: Dict[str, Any], server_id: int) -> List[NewsArticleCreate]:
         articles = data.get("data", [])
         parsed_articles = []
-
         for article in articles:
             source = article.get("source", "")
 
