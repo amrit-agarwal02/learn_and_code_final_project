@@ -1,13 +1,12 @@
-from client.api.api_client import APIClient
 from client.menu.base_menu import BaseMenu
 from client.menu.notification_menu import NotificationMenu
 from client.menu.headlines_menu import HeadlinesMenu
-from client.api.api_client import APIClient
 from datetime import datetime
+from client.api.user_client import UserClient
 
 class UserMenu(BaseMenu):
 
-    def __init__(self, api_client: APIClient):
+    def __init__(self, api_client: UserClient):
         self.api_client = api_client
 
     def show(self):

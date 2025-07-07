@@ -2,8 +2,8 @@ from typing import Dict, Any, List
 from server.services.interfaces.external_api_interface import IExternalAPIService
 from server.services.news_api_service import NewsAPIService
 from server.services.the_news_api_service import TheNewsAPIService
-from loguru import logger
-
+from server.utils.logger import logger
+from server.Exceptions.exceptions import ExternalServerNotFoundException
 
 class ExternalAPIFactory:
 
@@ -18,7 +18,7 @@ class ExternalAPIFactory:
             logger.info(f"Creating TheNewsAPI service for {server_name}")
             return TheNewsAPIService(api_config)
         else:
-            raise ValueError(f"Unsupported external API server: {server_name}")
+            raise ExternalServerNotFoundException(f"Unsupported external API server: {server_name}")
 
     @staticmethod
     def get_supported_apis() -> List[str]:

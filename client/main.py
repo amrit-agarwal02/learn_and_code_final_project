@@ -1,8 +1,8 @@
-from client.api.api_client import APIClient
+from client.api.user_client import UserClient
 from client.menu.main_menu import MainMenu
 
 def main():
-    api = APIClient()
+    api = UserClient()
     menu = MainMenu(api)
     menu.show()
 

@@ -7,13 +7,7 @@ class ArticleFeedbackController:
         self.feedback_service = ArticleFeedbackService()
 
     def like_article(self, user_id: int, article_id: int):
-        try:
-            return self.feedback_service.like_article(user_id, article_id)
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.feedback_service.like_article(user_id, article_id)
 
     def dislike_article(self, user_id: int, article_id: int):
-        try:
-            return self.feedback_service.dislike_article(user_id, article_id)
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.feedback_service.dislike_article(user_id, article_id)

@@ -1,6 +1,10 @@
+from client.api.admin_client import AdminClient
 from client.menu.base_menu import BaseMenu
 
 class AdminMenu(BaseMenu):
+    def __init__(self, admin_api: AdminClient):
+        self.api = admin_api
+
     def show(self):
         while True:
             print("\nAdmin Menu:")

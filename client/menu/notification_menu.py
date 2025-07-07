@@ -1,9 +1,9 @@
-from client.api.api_client import APIClient
+from client.api.user_client import UserClient
 from client.menu.base_menu import BaseMenu
 
 
 class NotificationMenu(BaseMenu):
-    def __init__(self, api_client: APIClient):
+    def __init__(self, api_client: UserClient):
         self.api_client = api_client
 
     def show(self):

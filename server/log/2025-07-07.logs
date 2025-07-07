@@ -52,3 +52,13 @@
 2025-07-07 12:47:45 | app | INFO | API NewsAPI is working
 2025-07-07 12:47:45 | app | INFO | Processing news from NewsAPI
 2025-07-07 12:47:50 | app | INFO | Notifications Stored result: {'inserted_notifications': 17}
+2025-07-07 13:45:02 | app | INFO | Starting sync from external API
+2025-07-07 13:45:02 | app | INFO | Attempting API: NewsAPI
+2025-07-07 13:45:02 | app | INFO | API NewsAPI is working
+2025-07-07 13:45:02 | app | INFO | Processing news from NewsAPI
+2025-07-07 13:45:08 | app | INFO | Notifications Stored result: {'inserted_notifications': 17}
+2025-07-07 13:59:05 | app | INFO | Starting sync from external API
+2025-07-07 13:59:06 | app | INFO | Attempting API: NewsAPI
+2025-07-07 13:59:06 | app | INFO | API NewsAPI is working
+2025-07-07 13:59:06 | app | INFO | Processing news from NewsAPI
+2025-07-07 13:59:09 | app | INFO | Notifications Stored result: {'inserted_notifications': 17}

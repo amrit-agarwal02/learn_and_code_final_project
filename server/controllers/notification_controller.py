@@ -9,32 +9,17 @@ class NotificationController:
         self.notification_service = NotificationService()
 
     def get_user_notification_setting(self, user):
-        try:
-            return self.notification_service.get_user_notification_setting(user)
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.notification_service.get_user_notification_setting(user)
 
     def save_user_notification_setting(self, user_id, notification_setting_data: NotificationRequest):
-        try:
-            return self.notification_service.save_user_notification_setting(user_id, notification_setting_data)
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.notification_service.save_user_notification_setting(user_id, notification_setting_data)
 
     def store_notifications(self):
-        try:
-            return self.notification_service.store_notifications()
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.notification_service.store_notifications()
 
     def get_notification_for_user(self, user_id):
-        try:
-            return self.notification_service.get_notification_for_user(user_id)
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.notification_service.get_notification_for_user(user_id)
 
     def update_notification_setting(self, user_id, setting_id, notification_setting):
-        try:
-            return self.notification_service.update_notification_setting(user_id, setting_id, notification_setting)
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.notification_service.update_notification_setting(user_id, setting_id, notification_setting)
 

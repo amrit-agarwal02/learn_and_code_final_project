@@ -9,39 +9,19 @@ class CategoryController:
         self.service = CategoryService()
 
     def get_all_categories(self) -> List[dict]:
-        try:
-            return self.service.get_all_categories()
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.service.get_all_categories()
 
     def get_category_by_id(self, category_id: int) -> dict:
-        try:
-            return self.service.get_category_by_id(category_id)
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.service.get_category_by_id(category_id)
 
     def create_category(self, category: CategoryCreate) -> dict:
-        try:
-            return self.service.create_category(category)
-        except ValueError as e:
-            raise HTTPException(status_code=400, detail=str(e))
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.service.create_category(category)
 
     def update_category(self, category_id: int, category: CategoryUpdate) -> dict:
-        try:
-            return self.service.update_category(category_id, category.name, category.description)
-        except ValueError as e:
-            raise HTTPException(status_code=400, detail=str(e))
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.service.update_category(category_id, category.name, category.description)
 
     def delete_category(self, category_id: int):
-        try:
-            self.service.delete_category(category_id)
-            return {"message": f"Category {category_id} deleted successfully"}
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        self.service.delete_category(category_id)
 
     def hide_category(self, category_id):
         return self.service.hide_category(category_id)

@@ -26,7 +26,6 @@ class INotificationService(ABC):
     
     @abstractmethod
     def update_notification_setting(self, user_id: int, setting_id: int, notification_setting: Dict[str, Any]) -> Dict[str, Any]:
-        """Update user notification settings."""
         pass
     
     @abstractmethod

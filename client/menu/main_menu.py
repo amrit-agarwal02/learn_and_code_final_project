@@ -2,6 +2,7 @@ from client.auth.auth_handler import AuthHandler
 from client.menu.admin_menu import AdminMenu
 from client.menu.user_menu import UserMenu
 from client.menu.base_menu import BaseMenu
+from client.api.admin_client import AdminClient
 
 class MainMenu(BaseMenu):
     def __init__(self, api):
@@ -28,6 +29,7 @@ class MainMenu(BaseMenu):
 
     def _show_role_related_menu(self):
         if self.api.user_role == "admin":
-            AdminMenu(self.api).show()
+            admin_api = AdminClient(token=self.api.token)
+            AdminMenu(admin_api).show()
         else:
             UserMenu(self.api).show()

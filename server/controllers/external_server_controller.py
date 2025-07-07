@@ -7,19 +7,10 @@ class ExternalServerController:
         self.server_service = ExternalServerService()
 
     def get_all_external_servers(self):
-        try:
-            return self.server_service.get_all_external_servers()
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.server_service.get_all_external_servers()
 
     def get_external_server_details(self):
-        try:
-            return self.server_service.get_external_server_details()
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.server_service.get_external_server_details()
 
     def update_server_key(self, server_id: int, new_api_key: str):
-        try:
-            return self.server_service.update_server_key(server_id, new_api_key)
-        except Exception as e:
-            raise HTTPException(status_code=HTTP_INTERNAL_SERVER_ERROR, detail=str(e))
+        return self.server_service.update_server_key(server_id, new_api_key)

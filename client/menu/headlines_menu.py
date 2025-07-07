@@ -1,11 +1,11 @@
-from client.api.api_client import APIClient
+from client.api.user_client import UserClient
 from client.menu.base_menu import BaseMenu
 from datetime import datetime
 
 
 class HeadlinesMenu(BaseMenu):
 
-    def __init__(self, api_client: APIClient):
+    def __init__(self, api_client: UserClient):
         self.api_client = api_client
 
     def show(self):
@@ -27,18 +27,25 @@ class HeadlinesMenu(BaseMenu):
                 break
             elif choice == "4":
                 print("Logging out...")
-                # self.auth_handler.logout()
                 exit(0)
             else:
                 print("Invalid choice. Please try again.")
 
     def show_today_headlines(self):
-        """Show headlines for today"""
-        today = datetime.now().strftime("%Y-%m-%d")
-        self.show_headlines_by_date_range(today, today)
+        response = self.api_client.get_today_articles()
+        if "error" in response:
+            print(f"Error: {response['error']}")
+            return
+
+        articles = response.json()
+        if not articles:
+            print("No articles found for today.")
+            return
+
+        self.display_articles(articles)
+        self.show_article_actions(articles)
 
     def show_date_range_headlines(self):
-        """Show headlines for a date range"""
         start_date = input("Enter start date (YYYY-MM-DD): ")
         end_date = input("Enter end date (YYYY-MM-DD): ")
         self.show_headlines_by_date_range(start_date, end_date)
@@ -48,10 +55,9 @@ class HeadlinesMenu(BaseMenu):
         if not category:
             return
 
-        self.fetch_and_show_articles(start_date, end_date, category)
+        self.fetch_articles(start_date, end_date, category)
 
     def get_category_from_user(self):
-        """Get category selection from user"""
         categories_response = self.fetch_categories()
         categories = categories_response.json()
         if not categories:
@@ -62,7 +68,6 @@ class HeadlinesMenu(BaseMenu):
         return self.get_user_category_choice(categories)
 
     def fetch_categories(self):
-        """Fetch categories from database"""
         response = self.api_client.get_categories()
         if "error" in response:
             print(f"Error fetching categories: {response['error']}")
@@ -70,7 +75,6 @@ class HeadlinesMenu(BaseMenu):
         return response
 
     def show_category_menu(self, categories):
-        """Display category menu to user"""
         print("\nSelect category:")
         print("1. All")
         for idx, category in enumerate(categories, 2):
@@ -93,7 +97,7 @@ class HeadlinesMenu(BaseMenu):
                 pass
             print("Invalid choice. Please try again.")
 
-    def fetch_and_show_articles(self, start_date, end_date, category):
+    def fetch_articles(self, start_date, end_date, category):
         response = self.api_client.get_article_by_date_range(start_date, end_date, category)
         if "error" in response:
             print(f"Error: {response['error']}")

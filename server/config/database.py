@@ -7,7 +7,7 @@ class DbConnection:
             conn = sql.connect(
                 host="localhost",
                 user="root",
-                passwd="Amrit@1235",          # Your correct password
+                passwd="Amrit@1235",
                 database="news_aggregation_project",
                 use_pure= True
             )

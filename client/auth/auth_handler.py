@@ -1,9 +1,10 @@
 from getpass import getpass
-from client.api.api_client import APIClient
+from client.api.user_client import UserClient
 from client.utils import validate_email
 
+
 class AuthHandler:
-    def __init__(self, api: APIClient):
+    def __init__(self, api: UserClient):
         self.api = api
 
     def login(self) -> bool:
