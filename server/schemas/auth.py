@@ -1,0 +1,12 @@
+from pydantic import BaseModel, EmailStr
+
+
+class UserCredentials(BaseModel):
+    email: EmailStr
+    password: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
+    user_name: str
+    user_role: str
